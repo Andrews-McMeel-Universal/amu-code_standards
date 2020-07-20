@@ -26,7 +26,7 @@ It uses [babel-preset-airbnb](https://github.com/airbnb/babel-preset-airbnb) to 
 
 ## Polyfills
 
-While Babel converts ES6 syntax to ES5, it does not include new APIs and functionality that are often used with ES6, such as Promises. Those few features need to be polyfilled, or included, in order to function in incompatible browsers. [Babel recommends a polyfill](https://babeljs.io/docs/en/babel-polyfill) that we typically install at the same time. Here is a [list of features](https://github.com/zloirock/core-js#features) provided by the polyfill, `core-js`
+While Babel converts ES6 syntax to ES5, it does not include new APIs and functionality that are often used with ES6, such as Promises. Those few features need to be polyfilled, or included, in order to function in incompatible browsers. [Babel recommends a polyfill](https://babeljs.io/docs/en/babel-polyfill) that we typically install at the same time. Here is a [list of features](https://github.com/zloirock/core-js#features) provided by the polyfill, `core-js`.
 
 To install the polyfills:
 
