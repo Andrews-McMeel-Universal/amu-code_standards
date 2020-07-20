@@ -16,7 +16,7 @@ yarn add babel-loader @babel/core
 
 Please see the [Babel documentation](https://babeljs.io/docs/en/config-files/) to configure it for the project's needs. Here you'll find a sample `babel.config.json` (the config file).
 
-To use the demo config, also install these packages:
+To use the demo config, also install this package:
 
 ```bash
 yarn add babel-preset-airbnb
