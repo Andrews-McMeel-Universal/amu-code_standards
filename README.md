@@ -1,2 +1,1 @@
-# amu-code_standards
-Documentation
+# AMU Code Standards
