@@ -4,7 +4,7 @@
 
 ## Installation
 
-Prettier should be added to each project that uses it as a dev dependency. We prefer to install dependencies within each project instead of globally, because every app will have unique needs, setting up that app for the first time will install all needed dependencies, the formatter may be run in CI or through other automations, and it allows better control over versions and integration with other packages.
+Prettier should be added to each project that uses it as a dev dependency. We prefer to install dependencies within each project instead of globally, because every app will have unique needs, setting up that app for the first time will install all needed dependencies, the formatter can be run in CI or through other automations, and it allows better control over versioning and integration with other packages.
 
 Install it by running:
 
@@ -22,10 +22,11 @@ To use the demo config, also install these packages:
 yarn add eslint-config-prettier --dev
 ```
 
-That config will disable any formatting rules in ESLint that conflict with Prettier. After installing `eslint-config-prettier`, update the ESLint config to use the new config.
+That config will disable any formatting rules in ESLint that conflict with Prettier. After installing `eslint-config-prettier`, update the ESLint config to use the new Prettier plugin. This example show how to update our [recommended ESLint config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/linters).
 
-```json
+```diff
 {
-  "plugins": ["babel", "prettier"]
+-  "plugins": ["babel"]
++  "plugins": ["babel", "prettier"]
 }
 ```
