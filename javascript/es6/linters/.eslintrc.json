@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "airbnb-base"
-  ],
-  "plugins": [
-    "babel"
-  ],
+  "extends": ["airbnb-base"],
+  "plugins": ["babel"],
   "env": {
     "browser": true,
     "es6": true,
