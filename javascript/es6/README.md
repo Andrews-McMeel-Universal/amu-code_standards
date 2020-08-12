@@ -43,9 +43,12 @@ The game should also set a listener as soon as possible, so that it doesn't miss
 // 2. Game
 
 (function () {
-  window.addEventListener('message', event => {
+  window.addEventListener("message", (event) => {
     // Always check the origin of the data before responding to messages
-    var parentOrigin = (window.location != window.parent.location) ? document.referrer : document.location.href;
+    var parentOrigin =
+      window.location != window.parent.location
+        ? document.referrer
+        : document.location.href;
 
     // Do not proceed if the message came from an unexpected source
     if (!document.referrer.startsWith(parentOrigin)) {
@@ -121,7 +124,7 @@ amuGame = {
 }
 ```
 
-### On-Demand Data
+### On-Demand Commands and Data
 
 Every game should respond to the following requests from the client page:
 
@@ -129,12 +132,15 @@ Every game should respond to the following requests from the client page:
 amuGame = {
   // ...
   onRequest: {
-    currentSore: Number,
+    currentScore: Number,
     totalPlayTime: Number, // MS since game start, excluding paused time
     saveState: /* TBD, must recreate current game progress */,
+  },
+  onCommand: {
+    loadConfig: /* TBD, config data for customizing game look and feel */,
     loadLevel: /* TBD, determine data source */,
     loadSaveState: /* TBD, determine data structure */,
-  },
+  }
   // ...
 }
 ```
