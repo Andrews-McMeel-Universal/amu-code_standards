@@ -136,43 +136,41 @@ frame.contentWindow.postMessage(message, targetOrigin);
 The `amuGame` Object that contains data needed by the page. A complete message Object looks like this:
 
 ```javascript
-let message = {
-  amuGame: {
-    gameName: String,
-    gameId: Number,
-    debug: Boolean, // optional, default: false
-    windowLoaded: Boolean, // default: false, confirmation that window.onload is completed
-    data: {
-      // if the page requests "all", the game should send all data points
-      // else it should send only the requested data
+let amuGame = {
+  gameName: String,
+  gameId: Number,
+  debug: Boolean, // optional, default: false
+  windowLoaded: Boolean, // default: false, confirmation that window.onload is completed
+  data: {
+    // if the page requests "all", the game should send all data points
+    // else it should send only the requested data
 
-      // the current game score
-      currentScore: Number,
-      // MS since game start, excluding paused time
-      totalPlayTime: Number,
-      // must recreate current game progress
-      saveState: /* TBD */,
-    },
-    event: {
-      // if the page requests "all", the game should emit all events
-      // else it should emit only the requested events
-
-      // time the game was started
-      start: Number,
-      // time the game was paused
-      pause: Number,
-      // time the game was restarted
-      resume: Number,
-      // time the game was ended
-      end: Number,
-      modeChange: {
-        // TBD, type may vary on difficulty format per game, ex. "expert" vs 3
-        previousMode: String or Number,
-        currentMode: String or Number,
-      },
-    }
+    // the current game score
+    currentScore: Number,
+    // MS since game start, excluding paused time
+    totalPlayTime: Number,
+    // must recreate current game progress
+    saveState: /* TBD */,
   },
-}
+  event: {
+    // if the page requests "all", the game should emit all events
+    // else it should emit only the requested events
+
+    // time the game was started
+    start: Number,
+    // time the game was paused
+    pause: Number,
+    // time the game was restarted
+    resume: Number,
+    // time the game was ended
+    end: Number,
+    modeChange: {
+      // TBD, type may vary on difficulty format per game, ex. "expert" vs 3
+      previousMode: String or Number,
+      currentMode: String or Number,
+    },
+  }
+};
 
 // sending amuGame to the page:
 frame.contentWindow.postMessage({ amuGame.event.start }, targetOrigin);
