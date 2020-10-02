@@ -15,6 +15,7 @@ amuGame = {
   gameName: String,
   gameId: Number,
   debug: Boolean, // optional, default: false
+  // etc...
 };
 ```
 
@@ -67,15 +68,24 @@ Now that both the client page and the game are capable of listening to one anoth
 // 3. Game
 
 window.onload = function () {
+  var message = {
+    amuGame: {
+      windowLoaded: true,
+    },
+  };
+
   // Set a target window for the message, which will be the client page
-  var parentOrigin = (window.location != window.parent.location) ? document.referrer : document.location.href;
+  var parentOrigin =
+    window.location != window.parent.location
+      ? document.referrer
+      : document.location.href;
 
   // Send a confirmation message to the client window
-  window.parent.postMessage(/* Event for game window load complete */, parentOrigin);
+  window.parent.postMessage(message, parentOrigin);
 
   // Other game initialization can happen here, like mobile detection and resize listeners
   // ...
-}
+};
 ```
 
 The handshake is now complete, and the client page and game can now confidently exchange data. The first command sent to the game will request it to start loading and send whatever data is needed by the game to load the correct level and save state (if any).
@@ -85,7 +95,7 @@ The handshake is now complete, and the client page and game can now confidently 
 
 function handleGameMessage(event) {
   if (event.data === /* Event for game window load complete */) {
-    var message = /* Object with level and save data */;
+    var message = { initGame: true };
     var frame = document.getElementById(/* game iframe ID */);
     var targetOrigin = /* game source URL */;
 
@@ -98,49 +108,72 @@ function handleGameMessage(event) {
 }
 ```
 
-### In-Game Events
+### Messages to the Game
 
-Every game should emit the following events to the client page:
+An Object that specifies which command or commands and includes necessary data to fulfill that command. A complete message Object looks like this:
 
 ```javascript
-amuGame = {
-  // ...
-  onEvent: {
-    start: Date.now(),
-    pause: Date.now(),
-    resume: Date.now(),
-    end: Date.now(),
-    achievement: {
-      name: String,
-      description: String,
-    },
-    modeChange: {
-      // type may vary on difficulty format per game, ex. "expert" vs 3
-      previousDifficulty: String or Number,
-      currentDifficulty: String or Number,
-    },
-  },
-  // ...
+let message = {
+  // sends instruction to begin game initialization
+  initGame: true, // bool
+  // sends config data for customizing game look and feel
+  loadConfig: /* TBD */,
+  // sends level data for each day
+  loadLevel: /* TBD */,
+  // requests save data that represents a replicable play state
+  loadSaveState: /* TBD */,
+  // requests data points from the game, see amuGame.data below
+  getData: ["all", "currentScore", "totalPlayTime", "saveState"], // array of strings
+  // subscribes to an event or events emitted from the game, see amuGame.event
+  onEvent: ["all", "start", "pause", "resume", "end", "modeChange"], // array of strings
 }
+
+frame.contentWindow.postMessage(message, targetOrigin);
 ```
 
-### On-Demand Commands and Data
+### Messages from the Game
 
-Every game should respond to the following requests from the client page:
+The `amuGame` Object that contains data needed by the page. A complete message Object looks like this:
 
 ```javascript
-amuGame = {
-  // ...
-  onRequest: {
-    currentScore: Number,
-    totalPlayTime: Number, // MS since game start, excluding paused time
-    saveState: /* TBD, must recreate current game progress */,
+let message = {
+  amuGame: {
+    gameName: String,
+    gameId: Number,
+    debug: Boolean, // optional, default: false
+    windowLoaded: Boolean, // default: false, confirmation that window.onload is completed
+    data: {
+      // if the page requests "all", the game should send all data points
+      // else it should send only the requested data
+
+      // the current game score
+      currentScore: Number,
+      // MS since game start, excluding paused time
+      totalPlayTime: Number,
+      // must recreate current game progress
+      saveState: /* TBD */,
+    },
+    event: {
+      // if the page requests "all", the game should emit all events
+      // else it should emit only the requested events
+
+      // time the game was started
+      start: Number,
+      // time the game was paused
+      pause: Number,
+      // time the game was restarted
+      resume: Number,
+      // time the game was ended
+      end: Number,
+      modeChange: {
+        // TBD, type may vary on difficulty format per game, ex. "expert" vs 3
+        previousMode: String or Number,
+        currentMode: String or Number,
+      },
+    }
   },
-  onCommand: {
-    loadConfig: /* TBD, config data for customizing game look and feel */,
-    loadLevel: /* TBD, determine data source */,
-    loadSaveState: /* TBD, determine data structure */,
-  }
-  // ...
 }
+
+// sending amuGame to the page:
+frame.contentWindow.postMessage({ amuGame.event.start }, targetOrigin);
 ```
