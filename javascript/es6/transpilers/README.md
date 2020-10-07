@@ -16,13 +16,13 @@ yarn add babel-loader @babel/core
 
 Please see the [Babel documentation](https://babeljs.io/docs/en/config-files/) to configure it for the project's needs. Here you'll find a sample `babel.config.json` (the config file).
 
-To use the demo config, also install this package:
+To use the demo config, also install these packages:
 
 ```bash
-yarn add babel-preset-airbnb
+yarn add babel-preset-airbnb && yarn add @babel/preset-env --dev
 ```
 
-It uses [babel-preset-airbnb](https://github.com/airbnb/babel-preset-airbnb) to provide sensible defaults that are compatible with our adopted coding standards.
+It uses [babel-preset-env](https://babeljs.io/docs/en/babel-preset-env) to assist with supporting different target environments, and [babel-preset-airbnb](https://github.com/airbnb/babel-preset-airbnb) to provide sensible defaults that are compatible with our adopted coding standards.
 
 ## Polyfills
 

@@ -22,11 +22,12 @@ To use the demo config, also install these packages:
 yarn add eslint-config-prettier --dev
 ```
 
-That config will disable any formatting rules in ESLint that conflict with Prettier. After installing `eslint-config-prettier`, update the ESLint config to use the new Prettier plugin. This example show how to update our [recommended ESLint config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/linters).
+That config will disable any formatting rules in ESLint that conflict with Prettier. After installing `eslint-config-prettier`, update the ESLint config to use the new Prettier config. This example show how to update our [recommended ESLint config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/linters):
 
 ```diff
+# .eslintrc.json
 {
--  "plugins": ["babel"]
-+  "plugins": ["babel", "prettier"]
+   "plugins": ["babel"],
++  "extends": ["prettier"]
 }
 ```
