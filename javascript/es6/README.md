@@ -1,10 +1,12 @@
 # ES6 Coding Standards
 
-We follow the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
+We follow the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), which is sensible and widely adopted, and includes ready-made configs for our linter of choice, [ESLint](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/linters).
 
 ## Javascript Game Development
 
-AMU HTML5/Javascript games are loaded into webpages within iframes.
+AMU HTML5/Javascript games are loaded into webpages within iframes. The website handles initializing the game with whatever data is necessary to run, such as the daily level data.
+
+![AMU Game Architecture](diagrams/AMU-Game-Architecture.png)
 
 ### Base Data Structure
 
