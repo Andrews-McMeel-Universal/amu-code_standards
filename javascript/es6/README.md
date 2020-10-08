@@ -23,13 +23,12 @@ AMU HTML5/Javascript games are loaded into webpages within iframes. The website 
 
 #### amuGame
 
-Game data unique to AMU will be stored in an Object for consistent access and organization.
+Game data unique to AMU will be stored in a Javascript Object for consistent access and organization.
 
 ```javascript
 amuGame = {
   gameName: String,
-  gameId: Number,
-  debug: Boolean, // optional, default: false
+  debug: Boolean,
   // etc...
 };
 ```
@@ -136,6 +135,7 @@ let message = {
   // sends config data for customizing game look and feel
   loadConfig: /* TBD */,
   // sends level data for each day
+  // if loadLevel is sent during an active game, the game should reset and load the new data
   loadLevel: /* TBD */,
   // requests save data that represents a replicable play state
   loadSaveState: /* TBD */,
@@ -158,7 +158,6 @@ The `amuGame` Object that contains data needed by the page. A complete message O
 let amuGame = {
   // the name of the game
   gameName: String,
-  gameId: Number,
   // override to toggle debug messaging
   // optional, default: false
   debug: Boolean,
