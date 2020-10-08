@@ -1,27 +1,41 @@
 # ES6 Coding Standards
 
-We follow the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
+We follow the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), which is sensible and widely adopted, and includes ready-made configs for our linter of choice, [ESLint](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/linters).
 
 ## Javascript Game Development
 
-AMU HTML5/Javascript games are loaded into webpages within iframes.
+### Game Development Toolkit Recommendations
 
-### Base Data Structure
+There are numerous game development engines for creating HTML5/JS games. A popular engine we recommend considering is [Phaser](https://phaser.io/).
 
-Game data unique to AMU will be stored in an Object for consistent access and organization.
+Phaser supports:
+
+- [ES6](https://phaser.io/news/2020/04/modern-javascript-phaser-3-tutorial-part-1), which can be set up with your package manager of choice. We recommend using Parcel, as shown in the linked tutorial.
+  - There is also this video tutorial about [using ES6 in Phaser](https://phaser.io/news/2020/03/how-to-use-github-and-es6-tutorial).
+- [SVG images](https://phaser.io/examples/v3/search?search=svg), which is our preferred image format due to it's small file size and scalability (can be rendered at any size).
+- [Touch inputs](https://phaser.io/examples/v3/search?search=touch), which is necessary for mobile web games.
+
+### amuGame and Handling Page/Game Communication
+
+AMU HTML5/Javascript games are loaded into webpages within iframes. The website handles initializing the game with whatever data is necessary to run, such as the daily level data.
+
+![AMU Game Architecture](diagrams/AMU-Game-Architecture.png)
+
+#### amuGame
+
+Game data unique to AMU will be stored in a Javascript Object for consistent access and organization.
 
 ```javascript
 amuGame = {
   gameName: String,
-  gameId: Number,
-  debug: Boolean, // optional, default: false
+  debug: Boolean,
   // etc...
 };
 ```
 
 > All dates and times should be compatible with [UTC format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC). We recommend using [`Date.now()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now) to retrieve the current time.
 
-### Communication between the Page and the Game
+#### Communication between the Page and the Game
 
 All interactions between the page and game need to be done through [`window.postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) in order to support cross origin requests. These messages are used to exchange data and trigger events, both in the game and on the page.
 
@@ -68,14 +82,14 @@ Now that both the client page and the game are capable of listening to one anoth
 // 3. Game
 
 window.onload = function () {
-  var message = {
+  const message = {
     amuGame: {
       windowLoaded: true,
     },
   };
 
   // Set a target window for the message, which will be the client page
-  var parentOrigin =
+  const parentOrigin =
     window.location != window.parent.location
       ? document.referrer
       : document.location.href;
@@ -94,10 +108,10 @@ The handshake is now complete, and the client page and game can now confidently 
 // 4. Page
 
 function handleGameMessage(event) {
-  if (event.data === /* Event for game window load complete */) {
-    var message = { initGame: true };
-    var frame = document.getElementById(/* game iframe ID */);
-    var targetOrigin = /* game source URL */;
+  if (event.data === amuGame.windowLoaded) {
+    const message = { initGame: true };
+    const frame = document.getElementById(/* game iframe ID */);
+    const targetOrigin = /* game source URL */;
 
     // Send the initialize event
     frame.contentWindow.postMessage(message, targetOrigin);
@@ -108,24 +122,29 @@ function handleGameMessage(event) {
 }
 ```
 
-### Messages to the Game
+#### Messages to the Game
 
 An Object that specifies which command or commands and includes necessary data to fulfill that command. A complete message Object looks like this:
 
 ```javascript
 let message = {
   // sends instruction to begin game initialization
-  initGame: true, // bool
+  initGame: Boolean,
+  // sends instruction to pause the game, same as if the player triggered it
+  pauseGame: Boolean,
   // sends config data for customizing game look and feel
   loadConfig: /* TBD */,
   // sends level data for each day
+  // if loadLevel is sent during an active game, the game should reset and load the new data
   loadLevel: /* TBD */,
   // requests save data that represents a replicable play state
   loadSaveState: /* TBD */,
   // requests data points from the game, see amuGame.data below
-  getData: ["all", "currentScore", "totalPlayTime", "saveState"], // array of strings
-  // subscribes to an event or events emitted from the game, see amuGame.event
-  onEvent: ["all", "start", "pause", "resume", "end", "modeChange"], // array of strings
+  // options: ["all", "currentScore", "totalPlayTime", "saveState"]
+  getData: Array,
+  // subscribes to an event or events emitted from the game, see amuGame.event below
+  // options: ["all", "start", "pause", "resume", "end", "modeChange"]
+  onEvent: Array,
 }
 
 frame.contentWindow.postMessage(message, targetOrigin);
@@ -137,18 +156,30 @@ The `amuGame` Object that contains data needed by the page. A complete message O
 
 ```javascript
 let amuGame = {
+  // the name of the game
   gameName: String,
-  gameId: Number,
-  debug: Boolean, // optional, default: false
-  windowLoaded: Boolean, // default: false, confirmation that window.onload is completed
+  // override to toggle debug messaging
+  // optional, default: false
+  debug: Boolean,
+  // confirmation that window.onload is completed
+  // default: false
+  windowLoaded: Boolean,
   data: {
     // if the page requests "all", the game should send all data points
     // else it should send only the requested data
 
     // the current game score
     currentScore: Number,
-    // MS since game start, excluding paused time
+    // time since game start, excluding paused time
     totalPlayTime: Number,
+    // how close the user is to finishing the current level
+    percentComplete: Number,
+    // the difficulty mode (expert or casual) when the user finished the game
+    completionMode: String,
+    // true if the user changed difficulty modes during the game
+    modeChanged: Boolean,
+    // true if the user erased an answer during the game
+    erasedAnswer: Boolean,
     // must recreate current game progress
     saveState: /* TBD */,
   },
@@ -164,10 +195,10 @@ let amuGame = {
     resume: Number,
     // time the game was ended
     end: Number,
+    // the difficulty mode (expert or casual) change history
     modeChange: {
-      // TBD, type may vary on difficulty format per game, ex. "expert" vs 3
-      previousMode: String or Number,
-      currentMode: String or Number,
+      previousMode: String,
+      currentMode: String,
     },
   }
 };
