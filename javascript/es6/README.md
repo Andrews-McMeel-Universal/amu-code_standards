@@ -82,20 +82,25 @@ Now that both the client page and the game are capable of listening to one anoth
 // 3. Game
 
 window.onload = function () {
-  const message = {
-    amuGame: {
-      windowLoaded: true,
-    },
-  };
-
   // Set a target window for the message, which will be the client page
   const parentOrigin =
     window.location != window.parent.location
       ? document.referrer
       : document.location.href;
 
-  // Send a confirmation message to the client window
-  window.parent.postMessage(message, parentOrigin);
+  if (document.referrer.startsWith(parentOrigin)) {
+    // The game is in an iframe, so send a confirmation message to the client window
+    const message = {
+      amuGame: {
+        windowLoaded: true,
+      },
+    };
+    window.parent.postMessage(message, parentOrigin);
+  } else {
+    // The game isn't in an iframe, so it's ok to start the game automatically
+    // Dispatch game start event/s
+    // ...
+  }
 
   // Other game initialization can happen here, like mobile detection and resize listeners
   // ...
@@ -150,7 +155,7 @@ let message = {
 frame.contentWindow.postMessage(message, targetOrigin);
 ```
 
-### Messages from the Game
+#### Messages from the Game
 
 The `amuGame` Object that contains data needed by the page. A complete message Object looks like this:
 
