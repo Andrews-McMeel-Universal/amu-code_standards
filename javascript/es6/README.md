@@ -155,7 +155,7 @@ let message = {
 frame.contentWindow.postMessage(message, targetOrigin);
 ```
 
-### Messages from the Game
+#### Messages from the Game
 
 The `amuGame` Object that contains data needed by the page. A complete message Object looks like this:
 
