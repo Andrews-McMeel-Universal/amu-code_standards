@@ -19,7 +19,7 @@ AMU benefits:
 
 Microsoft examples and samples conform to the following conventions:
 
-- Use the default Code Editor settings (smart indenting, four-character indents, tabs saved as spaces). For more information, see [Options, Text Editor, C#, Formatting](https://docs.microsoft.com/en-us/visualstudio/ide/reference/options-text-editor-csharp-formatting).
+- Use the default Code Editor settings (smart indenting, four-character indents, tabs saved as spaces). For more information, see [Options, Text Editor, C#, Formatting](https://docs.microsoft.com/en-us/visualstudio/ide/reference/options-text-editor-csharp-formatting).  Note: this is a departure from a two-space rule AMU used in the past, and only applies to C#.
 - Write only one statement per line.
 - Write only one declaration per line.
 - Vertically align curly brackets.
@@ -73,7 +73,7 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 - Do not use Hungarian notation to add type identification to identifiers (e.g., string strName).
 - Do not use underscores in identifiers. *Exceptions: unit test class names, and private static variables* *(e.g., _injectedService).*
-- Do prefix interfaces with the letter capital letter I.
+- Do prefix interface names with the capital letter I (e.g., IServiceName).
 - Do name source files according to their main classes.
 - Do use singular names for enums. *Exception: bit field enums.*
 
@@ -81,7 +81,7 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 ## Commenting Conventions
 
-- Place the comment on a separate line, not at the end of a line of code.
+- Place comments on a separate line, not at the end of a line of code.
 
 - Begin comment text with an uppercase letter.
 
@@ -102,9 +102,83 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 **<u>String Data Types</u>**
 
 - Use [string interpolation](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated) to concatenate short strings.
+
 - To append strings in loops, especially with large amounts of text, use a StringBuilder object.
+
+  
 
 <u>**Implicitly Typed Local Variables**</u>
 
+Local variables can be declared without giving an explicit type. The var
+
 - Use implicit typing (i.e., var) when the type of the variable is obvious from the right side of the assignment, or when precise type is not important.
+
+   ```csharp
+   // When the type of a variable is clear from the context, use var
+   // in the declaration.
+   var var1 = "This is clearly a string.";
+   var var2 = 27;
+   ```
+
+
+
+
 - Do not use var when the type is not apparent from the right side of the assignment.
+
+  ```csharp
+// When the type of a variable is not clear from the context, use an
+// explicit type. You generally don't assume the type clear from a method name.
+// A variable type is considered clear if it's a new operator or an explicit cast.
+int var3 = Convert.ToInt32(Console.ReadLine());
+int var4 = ExampleClass.ResultSoFar();
+var myList = new List<string>();
+  ```
+
+
+
+
+- Do not rely on the variable name to specify the type of the variable. It might not be correct.
+
+  ```csharp
+  // Naming the following variable inputInt is misleading.
+  // It is a string.
+  var inputInt = Console.ReadLine();
+  Console.WriteLine(inputInt);
+  ```
+
+  
+
+- Use implicit typing to determine the type of the loop variable in for loops. The following example uses implicit typing in a for statement.
+
+  ```csharp
+  var phrase = "lalalalalalalalalalalalalalalalalalalalalalalalalalalalalala";
+  var manyPhrases = new StringBuilder();
+  for (var i = 0; i < 10000; i++)
+  {
+      manyPhrases.Append(phrase);
+  }
+  Console.WriteLine("tra" + manyPhrases);
+  ```
+
+  
+
+- Do not use implicit typing to determine the type of the loop variable in foreach loops. The following example uses explicit typing in a foreach statement.
+
+  ```csharp
+  foreach (char ch in laugh)
+  {
+    if (ch == 'h')
+    {
+        Console.Write("H");
+    }
+    else
+    {
+        Console.Write(ch);
+    }
+  }
+  Console.WriteLine();
+  ```
+
+  
+
+- Avoid the use of var in place of dynamic.
