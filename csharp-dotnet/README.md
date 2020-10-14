@@ -109,9 +109,9 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 <u>**Implicitly Typed Local Variables**</u>
 
-Local variables can be declared without giving an explicit type. The var
+Local variables can be declared without giving an explicit type. The `var` keyword instructs the compiler to infer the type of the variable from the expression on the right side. Guidelines appear below but In summary, optimize code for ease of reading.
 
-- Use implicit typing (i.e., var) when the type of the variable is obvious from the right side of the assignment, or when precise type is not important.
+- Use implicit typing (i.e., `var`) when the type of the variable is obvious from the right side of the assignment, or when precise type is not important.
 
    ```csharp
    // When the type of a variable is clear from the context, use var
@@ -123,7 +123,7 @@ Local variables can be declared without giving an explicit type. The var
 
 
 
-- Do not use var when the type is not apparent from the right side of the assignment.
+- Do not use `var` when the type is not apparent from the right side of the assignment.
 
   ```csharp
 // When the type of a variable is not clear from the context, use an
@@ -181,4 +181,4 @@ var myList = new List<string>();
 
   
 
-- Avoid the use of var in place of dynamic.
+- Avoid the use of `var` in place of `dynamic`.
