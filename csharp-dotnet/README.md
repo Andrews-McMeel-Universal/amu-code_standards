@@ -53,7 +53,7 @@ The first letter in the identifier and the first letter of each subsequent conca
 
 **<u>Camel Casing</u>**
 
-The first letter in the identifier is lowercase and the first letter of each subsequent concatenated word is capitalized. Use Camel casing for local variables and method parameters that are not publicly available
+The first letter in the identifier is lowercase and the first letter of each subsequent concatenated word is capitalized. Use Camel casing for local variables and method parameters that are not publicly available.
 
 `freezingPoint`
 
@@ -73,9 +73,9 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 - Do not use Hungarian notation to add type identification to identifiers (e.g., string strName).
 - Do not use underscores in identifiers. *Exceptions: unit test class names, and private static variables* *(e.g., _injectedService).*
-- Prefix interfaces with the letter capital letter I.
-- Name source files according to their main classes.
-- Use singular names for enums. *Exception: bit field enums.*
+- Do prefix interfaces with the letter capital letter I.
+- Do name source files according to their main classes.
+- Do use singular names for enums. *Exception: bit field enums.*
 
 
 
