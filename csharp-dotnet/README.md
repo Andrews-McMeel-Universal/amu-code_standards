@@ -69,6 +69,14 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 `FREEZING_POINT`
 
+**<u>Async Methods</u>**
+
+You should add "Async" as the suffix of every async method name you write.
+
+This is the convention used in .NET to more easily differentiate synchronous and asynchronous methods. Methods not explicitly called by your code (e.g., controller methods, event handlers) don't necessarily apply.
+
+
+
 **<u>Do's and Don'ts</u>** 
 
 - Do not use Hungarian notation to add type identification to identifiers (e.g., string strName).
