@@ -109,7 +109,7 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 <u>**Implicitly Typed Local Variables**</u>
 
-Local variables can be declared without giving an explicit type. The `var` keyword instructs the compiler to infer the type of the variable from the expression on the right side. Guidelines appear below but In summary, optimize code for ease of reading.
+Local variables can be declared without giving an explicit type. The `var` keyword instructs the compiler to infer the type of the variable from the expression on the right side. Guidelines appear below but in summary, optimize code for ease of reading.
 
 - Use implicit typing (i.e., `var`) when the type of the variable is obvious from the right side of the assignment, or when precise type is not important.
 
