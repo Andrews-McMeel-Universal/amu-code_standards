@@ -73,7 +73,7 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 You should add "Async" as the suffix of every async method name you write.
 
-This is the convention used in .NET to more easily differentiate synchronous and asynchronous methods. Methods not explicitly called by your code (e.g., controller methods, event handlers) don't necessarily apply.
+This is the convention used in .NET to more easily differentiate synchronous and asynchronous methods. Not required for methods not explicitly called by your code (e.g., controller methods, event handlers).
 
 
 
