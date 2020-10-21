@@ -74,6 +74,18 @@ The game should also set a listener as soon as possible, so that it doesn't miss
     handlePageMessage(event);
   });
 })();
+
+// An example of handlePageMessage, which needs to handle any message from the page
+// See Messages to the Game below for more information
+function handlePageMessage(event) {
+  if (event.data.initGame === true) {
+    // Dispatch game start event/s
+  } else if (event.data.pauseGame == true) {
+    // Dispatch game pause event/s
+  }
+  // Handle other messages as needed
+  // ...
+}
 ```
 
 Now that both the client page and the game are capable of listening to one another, the game should dispatch a message to confirm to the page it is ready to receive additional messages:
@@ -152,6 +164,7 @@ let message = {
   onEvent: Array,
 }
 
+// Sending a message to the game
 frame.contentWindow.postMessage(message, targetOrigin);
 ```
 
@@ -208,6 +221,6 @@ let amuGame = {
   }
 };
 
-// sending amuGame to the page:
+// Sending amuGame to the page:
 frame.contentWindow.postMessage({ amuGame.event.start }, targetOrigin);
 ```
