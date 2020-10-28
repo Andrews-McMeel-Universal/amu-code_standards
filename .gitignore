@@ -1,0 +1,87 @@
+# Application Configuration Ignores
+/vendor/bundle
+.rvmrc
+.eslintcache
+.stylelintcache
+/.bundle
+.project
+.idea/*
+.vscode/*
+config/initializers/secret_token.rb
+public/robots.txt
+*.env
+.sentryclirc
+storage
+
+# DB Ignores
+/db/*.sqlite3
+config/development.sphinx.conf
+/db/sphinx/
+/coverage/
+/spec/tmp/*
+**.orig
+rerun.txt
+pickle-email-*.html
+mysql-connector-java-5.1.15-bin.jar
+
+# Asset Ignores
+/public/system/*
+/public/js/*
+public/uploads*
+/public/sitemap.xml
+/public/sitemap.xml.gz
+/public/tfs-sw.js*
+/public/workbox*
+assets.js
+tfs-sw.js
+
+# Error and Logging Ignores
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+.byebug_history
+
+# Caching Ignores
+*.sassc
+.sass-cache
+
+# File System Ignores
+.DS_Store
+/public/assets/
+/cache/*
+.powenv
+.ruby-gemset
+
+# Misc Ignores
+*.rbc
+*.swp
+capybara-*.html
+*.old
+blog_core.*
+/public/*.jpg
+/public/*.png
+/public/tmp
+/public/uploads
+/public/cache/*
+rails_best_practices_output.html
+
+# React on Rails
+npm-debug.log*
+node_modules
+.rake_tasks
+
+# Generated js bundles
+/public/webpack/*
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity
+.vscode/launch.json
+
+# Testing
+/test-reports/*
+
+# SSH
+id_rsa
