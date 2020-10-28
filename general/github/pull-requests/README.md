@@ -3,7 +3,7 @@
 
 Before your branch can be merged into staging, a code review is required as part of your pull request.
 
-1. When initiating a pull request, make sure your branch name matches the parameters set forth in the git-hooks section(if applicable).
+1. When initiating a pull request, make sure your branch name matches the parameters set forth in the git-hooks section (if applicable).
 2. In most cases, create your pull request against branch "staging" (in rare cases you may make pull requests to another engineer's branch or other environments).
 3. After initializing a pull-request, you'll see a review page that shows a high-level overview of the changes between your branch and staging.  Here you can add explanation for your changes, especially if they're not explained in the associated JIRA task.
 4. Make sure to add reviewers, this will ping the engineers you select for a review.  In general, try to chose other engineers most familiar with the project you're working on.
