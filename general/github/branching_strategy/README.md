@@ -1,4 +1,5 @@
 # Branching Strategy
+
 Branch names should be modeled after their associated environment.  Here at AMU, those environments are commonly "staging" and 
 "production".  The "staging" branch contains the "next" version of the application and is used for final stress testing and client/product owner approvals before going live.
 The "production" branch is the currently released version of the application, accessible to the client/end users.  Occasionally, projects will also have a "demo" remote branch where specific versions can be tested/approved for release.  In most cases, these should be the only branches that exist on the remote within each project.
