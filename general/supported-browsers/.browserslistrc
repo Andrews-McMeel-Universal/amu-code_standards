@@ -1,6 +1,6 @@
 # Supported browsers
-# Please update this URL if changing the config:
-# https://browserl.ist/?q=%3E%3D+2%25%2C+maintained+node+versions%2C+last+3+major+versions%2C+not+op_mini+all%2C+not+dead
+# If you change this config please visit this URL, update the settings, and replace with new URL:
+# https://browserslist.dev/?q=Pj0gMiUsIGxhc3QgMyBtYWpvciB2ZXJzaW9ucywgbGFzdCAyIHllYXJzLCBtYWludGFpbmVkIG5vZGUgdmVyc2lvbnMsIG5vdCBvcF9taW5pIGFsbCwgbm90IGRlYWQ%3D
 
 >= 2%
 last 3 major versions
