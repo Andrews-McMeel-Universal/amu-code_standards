@@ -145,24 +145,55 @@ An Object that specifies which command or commands and includes necessary data t
 
 ```javascript
 let message = {
-  // sends instruction to begin game initialization
+  // Sends instruction to begin game initialization
   initGame: Boolean,
-  // sends instruction to pause the game, same as if the player triggered it
+
+  // Sends instruction to pause the game, same as if the player triggered it
   pauseGame: Boolean,
-  // sends config data for customizing game look and feel
-  loadConfig: /* TBD */,
-  // sends level data for each day
-  // if loadLevel is sent during an active game, the game should reset and load the new data
-  loadLevel: /* TBD */,
-  // requests save data that represents a replicable play state
-  loadSaveState: /* TBD */,
-  // requests data points from the game, see amuGame.data below
-  // options: ["all", "currentScore", "totalPlayTime", "saveState"]
+
+  // Sends config data for customizing game look and feel
+  // This varies per game and is sent as an Object from a JSON response
+  loadConfig: Object,
+
+  // Sends level data for each day
+  // This varies per game, and is usually in XML or JSON format
+  // If loadLevel is sent during an active game, the game should reset and load the new data
+  loadLevel: {
+    // URL to or Blob of data
+    puzzleData: String or Blob,
+
+    // Format: ISO Date (YYYY-MM-DD)
+	  puzzleDate: String,
+  },
+
+  // Requests save data that represents a replicable play state
+  // This varies per game and is sent as an Object from a JSON response
+  loadSaveState: {
+    // The difficulty mode ("expert" or "casual") when the user finished the game
+    // Required
+    completionMode: String,
+
+    // True if the user changed difficulty modes during the game
+    // Required
+    modeChanged: Boolean,
+
+    // Time since game start, excluding paused time
+    // Required
+    // Format: UTC
+    totalPlayTime: Number,
+
+    // Additional data as needed, which varies per game
+    // ...
+  },
+
+  // Requests data points from the game, see amuGame.data below
+  // Options: ["all", "currentScore", "totalPlayTime", "saveState"]
   getData: Array,
-  // subscribes to an event or events emitted from the game, see amuGame.event below
-  // options: ["all", "start", "pause", "resume", "end", "modeChange"]
+
+  // Subscribes to an event or events emitted from the game, see amuGame.event below
+  // Options: ["all", "start", "pause", "resume", "end", "modeChange"]
   onEvent: Array,
-}
+};
 
 // Sending a message to the game
 frame.contentWindow.postMessage(message, targetOrigin);
@@ -170,55 +201,69 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 #### Messages from the Game
 
-The `amuGame` Object that contains data needed by the page. A complete message Object looks like this:
+The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game. A complete message Object looks like this:
 
 ```javascript
-let amuGame = {
-  // the name of the game
-  gameName: String,
-  // override to toggle debug messaging
-  // optional, default: false
-  debug: Boolean,
-  // confirmation that window.onload is completed
-  // default: false
-  windowLoaded: Boolean,
-  data: {
-    // if the page requests "all", the game should send all data points
-    // else it should send only the requested data
+let message = {
+  amuGame: {
+    // The name of the game
+    gameName: String,
 
-    // the current game score
-    currentScore: Number,
-    // time since game start, excluding paused time
-    totalPlayTime: Number,
-    // how close the user is to finishing the current level
-    percentComplete: Number,
-    // the difficulty mode (expert or casual) when the user finished the game
-    completionMode: String,
-    // true if the user changed difficulty modes during the game
-    modeChanged: Boolean,
-    // true if the user erased an answer during the game
-    erasedAnswer: Boolean,
-    // must recreate current game progress
-    saveState: /* TBD */,
-  },
-  event: {
-    // if the page requests "all", the game should emit all events
-    // else it should emit only the requested events
+    // Confirmation that the game's window.onload is completed
+    // This is used to to verify the game is ready to receive and act on messages from the page
+    // Default: false
+    windowLoaded: Boolean,
 
-    // time the game was started
-    start: Number,
-    // time the game was paused
-    pause: Number,
-    // time the game was restarted
-    resume: Number,
-    // time the game was ended
-    end: Number,
-    // the difficulty mode (expert or casual) change history
-    modeChange: {
-      previousMode: String,
-      currentMode: String,
+    // If the page requests "all", the game should send all data points
+    // Otherwise it should send only the requested data
+    data: {
+      // Used to recreate current game progress for the current level
+      // Level data is stored separately, and is not expected as part of this Object
+      saveState: {
+        // The difficulty mode ("expert" or "casual") when the user finished the game
+        // Required
+        completionMode: String,
+
+        // True if the user changed difficulty modes during the game
+        // Required
+        modeChanged: Boolean,
+
+        // Time since game start, excluding paused time
+        // Required
+        // Format: UTC
+        totalPlayTime: Number,
+
+        // Additional data as needed, which varies per game
+        // ...
+      },
     },
-  }
+
+    // If the page requests "all", the game should emit all events
+    // Otherwise it should emit only the requested events
+    event: {
+      // Time the game was started
+      // Format: UTC
+      start: Number,
+
+      // Time the game was paused
+      // Format: UTC
+      pause: Number,
+
+      // Time the game was restarted
+      // Format: UTC
+      resume: Number,
+
+      // Time the game was ended
+      // Format: UTC
+      end: Number,
+
+      // The difficulty mode ("expert" or "casual") change history
+      modeChange: {
+        previousMode: String,
+        currentMode: String,
+      },
+    },
+  },
 };
 
 // Sending amuGame to the page:
