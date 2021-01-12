@@ -1,6 +1,6 @@
 # Browser Support
 
-We use [Browserslist](https://github.com/browserslist/browserslist) to determine browser support. Many tools will use the `.browserslistrc` config file to automatically provide a customized build that targets the desired browsers.
+We use [Browserslist](https://github.com/browserslist/browserslist) to determine browser support. Many tools will use the `.browserslistrc` config file to automatically provide a customized build that targets the desired browsers. Our config is more permissive in selecting supported browsers than we officially support, but we do this in an effort to maintain a minumum acceptable experience on those additional browsers.
 
 ## Installation
 
