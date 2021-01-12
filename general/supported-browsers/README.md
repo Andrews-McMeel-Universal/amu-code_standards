@@ -1,6 +1,6 @@
 # Browser Support
 
-We use [Browserslist](https://github.com/browserslist/browserslist) to determine browser support. Many tools will use the `.browserslistrc` config file to automatically provide a customized build that targets the desired browsers.
+We use [Browserslist](https://github.com/browserslist/browserslist) to determine browser support. Many tools will use the `.browserslistrc` config file to automatically provide a customized build that targets the desired browsers. Our config is more permissive in selecting more supported browsers than we officially support, but we do this in an effort to maintain a minumum acceptable experience on those additional browsers.
 
 ## Installation
 
@@ -8,10 +8,8 @@ To use Browserslist, add a `.browserslistrc` file to the root of the project wit
 
 Useful links:
 
-- [browserl.ist](https://browserl.ist/?q=%3E%3D+2%25%2C+maintained+node+versions%2C+last+3+major+versions%2C+not+op_mini+all%2C+not+dead), an easy to read list of supported browsers (please update the link if you change the .browserslistrc)
+- [browserslist.dev](https://browserslist.dev/?q=Pj0gMiUsIGxhc3QgMyBtYWpvciB2ZXJzaW9ucywgbGFzdCAyIHllYXJzLCBtYWludGFpbmVkIG5vZGUgdmVyc2lvbnMsIG5vdCBvcF9taW5pIGFsbCwgbm90IGRlYWQ%3D), an easy to read list of supported browsers (please update the link if you change the .browserslistrc)
 - [@babel/preset-env](https://babeljs.io/docs/en/next/babel-preset-env.html), which is already included in our [recommended Babel config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/transpilers)
-- [Google Analytics export plugin](https://github.com/browserslist/browserslist-ga-export), for including actual site usage data in the supported browsers list
-  - **Always** double check the output **and** combine with additional rules, a small sample set will result in extremely limited browser support
 
 ## Linting for Browser Support
 
@@ -38,7 +36,7 @@ yarn add eslint-plugin-compat
 
 Update the ESLint config file:
 
-```json
+```
 {
   "extends": [
     ...
@@ -61,7 +59,7 @@ yarn add stylelint-no-unsupported-browser-features
 
 Update the Stylelint config file:
 
-```json
+```
 {
   "plugins": [
     ...
