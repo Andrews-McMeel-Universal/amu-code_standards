@@ -17,23 +17,9 @@ Phaser supports:
 
 ### amuGame and Handling Page/Game Communication
 
-AMU HTML5/Javascript games are loaded into webpages within iframes. The website handles initializing the game with whatever data is necessary to run, such as the daily level data.
+AMU HTML5/Javascript games are loaded into webpages within iframes. The website handles initializing the game with whatever data is necessary to run, such as the daily level data or game config data.
 
 ![AMU Game Architecture](diagrams/AMU-Game-Architecture.png)
-
-#### amuGame
-
-Game data unique to AMU will be stored in a Javascript Object for consistent access and organization.
-
-```javascript
-amuGame = {
-  gameName: String,
-  debug: Boolean,
-  // etc...
-};
-```
-
-> All dates and times should be compatible with [UTC format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC). We recommend using [`Date.now()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now) to retrieve the current time.
 
 #### Communication between the Page and the Game
 
@@ -141,33 +127,45 @@ function handleGameMessage(event) {
 
 #### Messages to the Game
 
-An Object that specifies which command or commands and includes necessary data to fulfill that command. A complete message Object looks like this:
+A Javascript Object that specifies which command or commands and includes necessary data to fulfill that command.
+
+A complete message Object looks like this:
 
 ```javascript
 let message = {
   // Sends instruction to begin game initialization
+  // Optional: If no initGame data is sent and the game is not in an iframe, the game is expected to initialize automatically
   initGame: Boolean,
 
   // Sends instruction to pause the game, same as if the player triggered it
+  // Optional
   pauseGame: Boolean,
 
   // Sends config data for customizing game look and feel
-  // This varies per game and is sent as an Object from a JSON response
+  // This varies per game and is sent to the game as a Javascript Object
+  // The page originally receives this in JSON format
+  // Optional: If no loadConfig data is sent, the game is expected to load a default config
   loadConfig: Object,
 
   // Sends level data for each day
   // This varies per game, and is usually in XML or JSON format
   // If loadLevel is sent during an active game, the game should reset and load the new data
+  // Optional: If no loadLevel data is sent, the game is expected to load static test or sample data
   loadLevel: {
     // URL to or Blob of data
+    // Required
     puzzleData: String or Blob,
 
+    // The date associated with this level data
+    // Required
     // Format: ISO Date (YYYY-MM-DD)
 	  puzzleDate: String,
   },
 
   // Requests save data that represents a replicable play state
-  // This varies per game and is sent as an Object from a JSON response
+  // This varies per game and is sent to the game as a Javascript Object
+  // The page originally receives this in JSON format
+  // Optional: If no loadSaveState data is sent, the game is expected to load a new game
   loadSaveState: {
     // The difficulty mode ("expert" or "casual") when the user finished the game
     // Required
@@ -187,11 +185,13 @@ let message = {
   },
 
   // Requests data points from the game, see amuGame.data below
-  // Options: ["all", "currentScore", "totalPlayTime", "saveState"]
+  // Optional
+  // Array Options: ["all", "completionMode", "modeChanged", "totalPlayTime", "saveState"]
   getData: Array,
 
   // Subscribes to an event or events emitted from the game, see amuGame.event below
-  // Options: ["all", "start", "pause", "resume", "end", "modeChange"]
+  // Optional
+  // Array Options: ["all", "start", "pause", "resume", "end", "modeChange"]
   onEvent: Array,
 };
 
@@ -201,21 +201,21 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 #### Messages from the Game
 
-The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game. A complete message Object looks like this:
+The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game.
+
+A complete message Object looks like this:
 
 ```javascript
 let message = {
   amuGame: {
-    // The name of the game
-    gameName: String,
-
     // Confirmation that the game's window.onload is completed
     // This is used to to verify the game is ready to receive and act on messages from the page
-    // Default: false
+    // Required
     windowLoaded: Boolean,
 
     // If the page requests "all", the game should send all data points
     // Otherwise it should send only the requested data
+    // Optional
     data: {
       // Used to recreate current game progress for the current level
       // Level data is stored separately, and is not expected as part of this Object
@@ -240,24 +240,30 @@ let message = {
 
     // If the page requests "all", the game should emit all events
     // Otherwise it should emit only the requested events
+    // Optional
     event: {
       // Time the game was started
       // Format: UTC
+      // Optional
       start: Number,
 
       // Time the game was paused
       // Format: UTC
+      // Optional
       pause: Number,
 
       // Time the game was restarted
       // Format: UTC
+      // Optional
       resume: Number,
 
       // Time the game was ended
       // Format: UTC
+      // Optional
       end: Number,
 
       // The difficulty mode ("expert" or "casual") change history
+      // Optional
       modeChange: {
         previousMode: String,
         currentMode: String,
