@@ -1,9 +1,11 @@
 ## Description
+
 _A summary of the changes_
 
 - [ ] This is appropriate for public visibility
 
 ## Links
+
 _relevant links_
 
-* Jira Issue: KEY-<num>
+- Jira Issue: PROJECTKEY-<num>
