@@ -69,6 +69,14 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 `FREEZING_POINT`
 
+**<u>Async Methods</u>**
+
+You should add "Async" as the suffix of every async method name you write.
+
+This is the convention used in .NET to more easily differentiate synchronous and asynchronous methods. Not required for methods not explicitly called by your code (e.g., controller methods, event handlers).
+
+
+
 **<u>Do's and Don'ts</u>** 
 
 - Do not use Hungarian notation to add type identification to identifiers (e.g., string strName).
@@ -109,7 +117,7 @@ All letters in the identifier are capitalized (aka upper snake case). This is on
 
 <u>**Implicitly Typed Local Variables**</u>
 
-Local variables can be declared without giving an explicit type. The `var` keyword instructs the compiler to infer the type of the variable from the expression on the right side. Guidelines appear below but In summary, optimize code for ease of reading.
+Local variables can be declared without giving an explicit type. The `var` keyword instructs the compiler to infer the type of the variable from the expression on the right side. Guidelines appear below but in summary, optimize code for ease of reading.
 
 - Use implicit typing (i.e., `var`) when the type of the variable is obvious from the right side of the assignment, or when precise type is not important.
 
