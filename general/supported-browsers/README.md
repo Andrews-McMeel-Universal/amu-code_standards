@@ -105,17 +105,17 @@ Mobile Browsers
 
 This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices
 
-- Android Tablets
+Android Tablets
 - Samsung tab
-- Android Phones
+Android Phones
 - Google Pixel
 - Samsung Galaxy
-- iOS Tablets
+iOS Tablets
 - iPad
 - iPad Pro
 - iPad Mini
 - iPad Air
-- iOS Phones
+iOS Phones
 - 8 and above
 
 Last updated- 4/2/2021
