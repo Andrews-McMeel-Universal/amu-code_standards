@@ -82,18 +82,35 @@ Update the Stylelint config file:
 # Supported Platforms (Confluence QA Page)
 This is a list of the client platforms/ browsers supported by AMU Products across the board. This will be maintained up to date on a periodic basis.
 
-Desktop Browsers:
+Desktop Browsers
 - Windows 10 Chrome 85 and above
-- Windows 10 Firefox 78 and above
+- Windows 10 Firefox 85 and above
 - Windows 10 Edge 85 and above
 - Windows 10 IE 11- NOT Supported
 - Windows 10 Opera 70 and above
 - Mac Safari 13 and above
 - Mac Chrome 85 and above
-- Mac Firefox 78 and above
+- Mac Firefox 85 and above
 
-Mobile Browsers:
-- Android v10 and above- Chrome
-- iOS v13 and above- Safari, Chrome
+Mobile Browsers
+- Android v11 and above
+- Chrome
+- iOS v14 and above
+- Safari, Chrome
+- Device Support 
 
-Last updated- 2/2/2021
+This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices
+- Android Tablets
+- Samsung tab
+- Android Phones
+- Google Pixel 
+- Samsung Galaxy
+- iOS Tablets
+- iPad
+- iPad Pro
+- iPad Mini
+- iPad Air
+- iOS Phones
+- 8 and above
+
+Last updated- 4/2/2021
