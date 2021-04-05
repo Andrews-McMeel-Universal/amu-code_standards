@@ -8,7 +8,7 @@ To use Browserslist, add a `.browserslistrc` file to the root of the project wit
 
 Useful links:
 
-- [browserslist.dev](https://browserslist.dev/?q=Pj0gMiUsIGxhc3QgMyBtYWpvciB2ZXJzaW9ucywgbGFzdCAyIHllYXJzLCBtYWludGFpbmVkIG5vZGUgdmVyc2lvbnMsIG5vdCBvcF9taW5pIGFsbCwgbm90IGRlYWQ%3D), an easy to read list of supported browsers (please update the link if you change the .browserslistrc)
+- [browserslist.dev](https://browserslist.dev/?q=Pj0gMSUgYW5kIGxhc3QgMyBtYWpvciB2ZXJzaW9ucywgbm90IElFIDExLCBub3Qgb3BfbWluaSBhbGwsIG5vdCBkZWFkLCBtYWludGFpbmVkIG5vZGUgdmVyc2lvbnM%3D), an easy to read list of supported browsers (please update the link if you change the .browserslistrc)
 - [@babel/preset-env](https://babeljs.io/docs/en/next/babel-preset-env.html), which is already included in our [recommended Babel config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/transpilers)
 
 ## Linting for Browser Support
@@ -79,10 +79,13 @@ Update the Stylelint config file:
   }
 }
 ```
+
 # Supported Platforms (Confluence QA Page)
+
 This is a list of the client platforms/ browsers supported by AMU Products across the board. This will be maintained up to date on a periodic basis.
 
 Desktop Browsers
+
 - Windows 10 Chrome 85 and above
 - Windows 10 Firefox 85 and above
 - Windows 10 Edge 85 and above
@@ -93,17 +96,19 @@ Desktop Browsers
 - Mac Firefox 85 and above
 
 Mobile Browsers
+
 - Android v11 and above
 - Chrome
 - iOS v14 and above
 - Safari, Chrome
-- Device Support 
+- Device Support
 
 This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices
+
 - Android Tablets
 - Samsung tab
 - Android Phones
-- Google Pixel 
+- Google Pixel
 - Samsung Galaxy
 - iOS Tablets
 - iPad
