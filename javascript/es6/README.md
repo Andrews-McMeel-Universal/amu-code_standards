@@ -202,7 +202,7 @@ let message = {
     // Optional
     data: {
       // Used to recreate current game progress for the current level
-      // Level data is stored separately, and is not expected as part of this Object
+      // Level data is stored separately, and should not be included in saveState
       saveState: {
         // The difficulty mode ("expert" or "casual") when the user finished the game
         // Required
@@ -216,6 +216,26 @@ let message = {
         // Required
         // Format: UTC
         totalPlayTime: Number,
+
+        usedHints: Boolean,
+        resetLevel: Boolean,
+        enabledDarkMode: Boolean,
+        madeMistakes: Boolean,
+        completedInOrder: Boolean,
+        completedInReverse: Boolean,
+        earnedPerfectScore: Boolean,
+        totalScore: Number,
+        wordsSolved: Number,
+        difficultyRating: Number,
+        revealedLetters: Number,
+        orderSolved: Array [Number],
+        bonusStreak: {
+          1x: Number,
+          2x: Number,
+          3x: Number,
+          4x: Number,
+          5x: Number,
+        }
 
         // Additional data as needed, which varies per game
         // ...
@@ -252,6 +272,13 @@ let message = {
         previousMode: String,
         currentMode: String,
       },
+
+      printedLevel: Boolean, // or time
+      usedHelp: Boolean,
+      changedSettings: Boolean,
+      solvedWord: Boolean, // see also wordsSolved
+      spottedDifference: Boolean,
+
     },
   },
 };
