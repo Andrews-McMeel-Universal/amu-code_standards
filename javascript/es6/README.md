@@ -137,52 +137,36 @@ let message = {
   // Optional: If no initGame data is sent and the game is not in an iframe, the game is expected to initialize automatically
   initGame: Boolean,
 
-  // Sends instruction to pause the game, same as if the player triggered it
-  // Optional
-  pauseGame: Boolean,
-
-  // Sends config data for customizing game look and feel
-  // This varies per game and is sent to the game as a Javascript Object
-  // The page originally receives this in JSON format
-  // Optional: If no loadConfig data is sent, the game is expected to load a default config
-  loadConfig: Object,
-
   // Sends level data for each day
   // This varies per game, and is usually in XML or JSON format
   // If loadLevel is sent during an active game, the game should reset and load the new data
   // Optional: If no loadLevel data is sent, the game is expected to load static test or sample data
   loadLevel: {
-    // URL to or Blob of data
+    // URL to the level data file
     // Required
-    puzzleData: String or Blob,
+    puzzleData: String,
 
     // The date associated with this level data
     // Required
-    // Format: ISO Date (YYYY-MM-DD)
-	  puzzleDate: String,
+    // Format: ISO Calendar Date, "YYYY-MM-DD"
+    puzzleDate: String,
   },
+
+  // Sends config data for customizing game look and feel
+  // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
+  // The page originally receives this in JSON format
+  // Optional: If no loadConfig data is sent, the game is expected to load a default config
+  loadConfig: Object,
 
   // Requests save data that represents a replicable play state
-  // This varies per game and is sent to the game as a Javascript Object
-  // The page originally receives this in JSON format
-  // Optional: If no loadSaveState data is sent, the game is expected to load a new game
-  loadSaveState: {
-    // The difficulty mode ("expert" or "casual") when the user finished the game
-    // Required
-    completionMode: String,
+  // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
+  // The page originally receives this in JSON format, and if a save state is available will return it to the game without modification
+  // Optional: If no loadSaveState data is sent during the initial game startup, the game is expected to load a new game
+  loadSaveState: Object,
 
-    // True if the user changed difficulty modes during the game
-    // Required
-    modeChanged: Boolean,
-
-    // Time since game start, excluding paused time
-    // Required
-    // Format: UTC
-    totalPlayTime: Number,
-
-    // Additional data as needed, which varies per game
-    // ...
-  },
+  // Sends instruction to pause the game, same as if the player triggered it
+  // Optional
+  pauseGame: Boolean,
 
   // Requests data points from the game, see amuGame.data below
   // Optional
