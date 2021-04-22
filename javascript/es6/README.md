@@ -209,38 +209,56 @@ let message = {
       // Level data is stored separately, and should not be included in saveState
       saveState: {
         // The difficulty mode ("expert" or "casual") when the user finished the game
-        // Required
         completionMode: String,
 
         // True if the user changed difficulty modes during the game
-        // Required
         modeChanged: Boolean,
 
         // Time since game start, excluding paused time
-        // Required
         // Format: UTC
         totalPlayTime: Number,
 
+        // True if the user used hint functionality
         usedHints: Boolean,
+
+        // True if the user reset the game state
+        // Note: This should persist in the save state once set to true, even if other states or valuse are reset
         resetLevel: Boolean,
+
+        // True if the user enabled dark mode
         enabledDarkMode: Boolean,
+
+        // True if the user entered an incorrect value
         madeMistakes: Boolean,
+
+        // Track the order the user solved the game (ie: [1, 2, 3, 5, 4])
+        orderSolved: Array [Number],
         completedInOrder: Boolean,
         completedInReverse: Boolean,
-        orderSolved: Array [Number],
-        earnedPerfectScore: Boolean,
+
+        // The total points earned when the game is completed
         totalScore: Number,
+
+        // The total number of words the user solved
         wordsSolved: Number,
+
+        // The difficulty number for this game level
         difficultyRating: Number,
-        revealedLetters: Number,
-        bonusStreak: {
+
+        // The number of bonus modifiers the user earned
+        scoreBonuses: {
           1x: Number,
           2x: Number,
           3x: Number,
           4x: Number,
           5x: Number,
         },
+
+        // The number of differences the user identified
         differencesSpotted: Number,
+
+        // True if the user earned the highest possible score
+        earnedPerfectScore: Boolean,
 
         // Additional data as needed, which varies per game
         // ...
@@ -283,7 +301,6 @@ let message = {
       changedSettings: Boolean,
       solvedWord: Boolean, // see also wordsSolved
       spottedDifference: Boolean,
-
     },
   },
 };
