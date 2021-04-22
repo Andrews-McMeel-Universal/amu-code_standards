@@ -137,20 +137,24 @@ let message = {
   // Optional: If no initGame data is sent and the game is not in an iframe, the game is expected to initialize automatically
   initGame: Boolean,
 
-  // Sends level data for each day
+  // Sends an array of level data for each day
   // This varies per game, and is usually in XML or JSON format
+  // Most games will receive only one object of level data (puzzleData and PuzzleDate),
+  // but some games require additional files
   // If loadLevel is sent during an active game, the game should reset and load the new data
   // Optional: If no loadLevel data is sent, the game is expected to load static test or sample data
-  loadLevel: {
-    // URL to the level data file
-    // Required
-    puzzleData: String,
+  loadLevel: [
+    {
+      // URL to the level data file
+      // Required
+      puzzleData: String,
 
-    // The date associated with this level data
-    // Required
-    // Format: ISO Calendar Date, "YYYY-MM-DD"
-    puzzleDate: String,
-  },
+      // The date associated with this level data
+      // Required
+      // Format: ISO Calendar Date, "YYYY-MM-DD"
+      puzzleDate: String,
+    },
+  ],
 
   // Sends config data for customizing game look and feel
   // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
@@ -223,19 +227,20 @@ let message = {
         madeMistakes: Boolean,
         completedInOrder: Boolean,
         completedInReverse: Boolean,
+        orderSolved: Array [Number],
         earnedPerfectScore: Boolean,
         totalScore: Number,
         wordsSolved: Number,
         difficultyRating: Number,
         revealedLetters: Number,
-        orderSolved: Array [Number],
         bonusStreak: {
           1x: Number,
           2x: Number,
           3x: Number,
           4x: Number,
           5x: Number,
-        }
+        },
+        differencesSpotted: Number,
 
         // Additional data as needed, which varies per game
         // ...
