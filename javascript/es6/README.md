@@ -137,24 +137,26 @@ let message = {
   // Optional: If no initGame data is sent and the game is not in an iframe, the game is expected to initialize automatically
   initGame: Boolean,
 
-  // Sends an array of level data for each day
-  // This varies per game, and is usually in XML or JSON format
-  // Most games will receive only one object of level data (puzzleData and PuzzleDate),
-  // but some games require additional files
+  // Sends data about the selected game level
   // If loadLevel is sent during an active game, the game should reset and load the new data
   // Optional: If no loadLevel data is sent, the game is expected to load static test or sample data
-  loadLevel: [
-    {
-      // URL to the level data file
-      // Required
-      puzzleData: String,
-
-      // The date associated with this level data
-      // Required
-      // Format: ISO Calendar Date, "YYYY-MM-DD"
-      puzzleDate: String,
-    },
-  ],
+  loadLevel: {
+    // The date associated with this level data
+    // Required
+    // Format: ISO 8601 Calendar Date, "YYYY-MM-DD"
+    issueDate: String,
+    // An array of files containing level data
+    // Required
+    levelDataFiles: [
+      {
+        // URL, mime type, and file name with extension for each level data file
+        // Required
+        url: String,
+        mimeType: String,
+        originalFileName: String,
+      },
+    ],
+  },
 
   // Sends config data for customizing game look and feel
   // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
@@ -214,8 +216,7 @@ let message = {
         // True if the user changed difficulty modes during the game
         modeChanged: Boolean,
 
-        // Time since game start, excluding paused time
-        // Format: UTC
+        // Milliseconds since game start, excluding paused time
         totalPlayTime: Number,
 
         // True if the user used hint functionality
@@ -259,9 +260,6 @@ let message = {
 
         // True if the user earned the highest possible score
         earnedPerfectScore: Boolean,
-
-        // Additional data as needed, which varies per game
-        // ...
       },
     },
 
@@ -269,25 +267,25 @@ let message = {
     // Otherwise it should emit only the requested events
     // Optional
     event: {
-      // Time the game was started
-      // Format: UTC
+      // Time the game was started, use new Date().toISOString() to determine the current date and time
+      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
-      start: Number,
+      start: String,
 
-      // Time the game was paused
-      // Format: UTC
+      // Time the game was paused, use new Date().toISOString() to determine the current date and time
+      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
-      pause: Number,
+      pause: String,
 
-      // Time the game was restarted
-      // Format: UTC
+      // Time the game was restarted, use new Date().toISOString() to determine the current date and time
+      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
-      resume: Number,
+      resume: String,
 
-      // Time the game was ended
-      // Format: UTC
+      // Time the game was ended, use new Date().toISOString() to determine the current date and time
+      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
-      end: Number,
+      end: String,
 
       // The difficulty mode ("expert" or "casual") change history
       // Optional
@@ -296,7 +294,7 @@ let message = {
         currentMode: String,
       },
 
-      printedLevel: Boolean, // or time
+      printedLevel: Boolean,
       usedHelp: Boolean,
       changedSettings: Boolean,
       solvedWord: Boolean, // see also wordsSolved
