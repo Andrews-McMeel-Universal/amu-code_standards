@@ -267,22 +267,22 @@ let message = {
     // Otherwise it should emit only the requested events
     // Optional
     event: {
-      // Time the game was started, use new Date().toISOString() to determine the current date and time
+      // Time the game was started, use `new Date().toISOString()` to determine the current date and time
       // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
       start: String,
 
-      // Time the game was paused, use new Date().toISOString() to determine the current date and time
+      // Time the game was paused, use `new Date().toISOString()` to determine the current date and time
       // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
       pause: String,
 
-      // Time the game was restarted, use new Date().toISOString() to determine the current date and time
+      // Time the game was restarted, use `new Date().toISOString()` to determine the current date and time
       // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
       resume: String,
 
-      // Time the game was ended, use new Date().toISOString() to determine the current date and time
+      // Time the game was ended, use `new Date().toISOString()` to determine the current date and time
       // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
       // Optional
       end: String,
