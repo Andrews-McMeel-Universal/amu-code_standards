@@ -147,7 +147,7 @@ let message = {
     issueDate: String,
     // An array of files containing level data
     // Required
-    levelDataFiles: [
+    files: [
       {
         // URL, mime type, and file name with extension for each level data file
         // Required
@@ -193,112 +193,84 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game.
 
-A complete message Object looks like this:
+| Attribute              | Type    | Description |
+| ---------------------- | ------- | ----------- |
+| `amuGame.windowLoaded` | boolean | Sends confirmation to the page that the game's window.onload is completed, indicating the game is ready to recieve and act on messages from the page. |
+| `amuGame.data`         | object  | Sends requested data to the page per `getData` options above. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completeionMode"`. |
+| `amuGame.data.saveState` | object (required) | Used to recreate current game progress for the current level. Level data is stored separately, and should **not** be included in saveState. |
+| `amuGame.data.saveState.completionMode` | string | The difficulty mode ("expert" or "casual") when the user finished the game. |
+| `amuGame.data.saveState.modeChanged` | boolean | `true` if the user changed difficulty modes during the game. |
+| `amuGame.data.saveState.totalPlayTime` | number | Milliseconds since game start, excluding paused time. |
+| `amuGame.data.saveState.usedHints` | boolean | `true` if the user used hint functionality. |
+| `amuGame.data.saveState.resetLevel` | boolean | `true` if the user reset the game state. This should persist in the save state once set to `true`, even if other states or valuse are reset. |
+| `amuGame.data.saveState.enabledDarkMode` | boolean | `true` if the user enabled dark mode. |
+| `amuGame.data.saveState.madeMistakes` | boolean | `true` if the user entered an incorrect value. |
+| `amuGame.data.saveState.orderSolved` | array containing numbers | Track the order the user solved the game. |
+| `amuGame.data.saveState.totalScore` | number | The total points earned when the game is completed. |
+| `amuGame.data.saveState.difficultyRating` | number | The difficulty number for this game level. |
+| `amuGame.data.saveState.scoreBonuses` | object | The types and number of bonus modifiers the user earned. |
+| `amuGame.data.saveState.differencesSpotted` | number | The number of differences the user identified. |
+| `amuGame.data.saveState.earnedPerfectScore` | boolean | `true` if the user earned the highest possible score. |
+| `amuGame.event`         | object  | Emits requested event data to the page per `onEvent` options above. If the page requests `"all"`, the game should emit data for all events, otherwise it should emit only the requested event data that matches an available key, such as `"start"`. |
+| `amuGame.event.start`         | string | Time the game was started, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.pause`         | string | Time the game was paused, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.resume`         | string | Time the game was resumed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.end`         | string | Time the game was completed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.modeChange`         | object | The difficulty mode change history. |
+| `amuGame.event.modeChange.previousMode` | string | The previously selected mode. |
+| `amuGame.event.modeChange.currentMode` | string | The newly selected mode. |
+| `amuGame.event.printLevel` | string | Time the game was printed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.useHelp` | string | Time the help was used, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.settingsChange` | string | Time the settings were changed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+| `amuGame.event.spotDifference` | string | Time that a difference was correctly spotted, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"` |
+
+
+An example complete message Object looks like this:
 
 ```javascript
 let message = {
   amuGame: {
-    // Confirmation that the game's window.onload is completed
-    // This is used to to verify the game is ready to receive and act on messages from the page
-    // Required
-    windowLoaded: Boolean,
-
-    // If the page requests "all", the game should send all data points
-    // Otherwise it should send only the requested data
-    // Optional
+    windowLoaded: true,
     data: {
-      // Used to recreate current game progress for the current level
-      // Level data is stored separately, and should not be included in saveState
       saveState: {
-        // The difficulty mode ("expert" or "casual") when the user finished the game
-        completionMode: String,
-
-        // True if the user changed difficulty modes during the game
-        modeChanged: Boolean,
-
-        // Milliseconds since game start, excluding paused time
-        totalPlayTime: Number,
-
-        // True if the user used hint functionality
-        usedHints: Boolean,
-
-        // True if the user reset the game state
-        // Note: This should persist in the save state once set to true, even if other states or valuse are reset
-        resetLevel: Boolean,
-
-        // True if the user enabled dark mode
-        enabledDarkMode: Boolean,
-
-        // True if the user entered an incorrect value
-        madeMistakes: Boolean,
-
-        // Track the order the user solved the game (ie: [1, 2, 3, 5, 4])
-        orderSolved: Array [Number],
-        completedInOrder: Boolean,
-        completedInReverse: Boolean,
-
-        // The total points earned when the game is completed
-        totalScore: Number,
-
-        // The total number of words the user solved
-        wordsSolved: Number,
-
-        // The difficulty number for this game level
-        difficultyRating: Number,
-
-        // The number of bonus modifiers the user earned
+        completionMode: 'casual',
+        modeChanged: false,
+        totalPlayTime: 1234456789,
+        usedHints: false,
+        resetLevel: false,
+        enabledDarkMode: false,
+        madeMistakes: false,
+        orderSolved: [1, 2, 3, 5, 4],
+        // completedInOrder: Boolean,
+        // completedInReverse: Boolean,
+        totalScore: 47,
+        wordsSolved: 3,
+        difficultyRating: 5,
         scoreBonuses: {
-          1x: Number,
-          2x: Number,
-          3x: Number,
-          4x: Number,
-          5x: Number,
+          1x: 0,
+          2x: 1,
+          3x: 2,
+          4x: 3,
+          5x: 4,
         },
-
-        // The number of differences the user identified
-        differencesSpotted: Number,
-
-        // True if the user earned the highest possible score
-        earnedPerfectScore: Boolean,
+        differencesSpotted: 0,
+        earnedPerfectScore: false,
       },
     },
-
-    // If the page requests "all", the game should emit all events
-    // Otherwise it should emit only the requested events
-    // Optional
     event: {
-      // Time the game was started, use `new Date().toISOString()` to determine the current date and time
-      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
-      // Optional
-      start: String,
-
-      // Time the game was paused, use `new Date().toISOString()` to determine the current date and time
-      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
-      // Optional
-      pause: String,
-
-      // Time the game was restarted, use `new Date().toISOString()` to determine the current date and time
-      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
-      // Optional
-      resume: String,
-
-      // Time the game was ended, use `new Date().toISOString()` to determine the current date and time
-      // Format: ISO 8601 with UTC offset, "YYYY-MM-DDTHH:mm:ss.sssZ"
-      // Optional
-      end: String,
-
-      // The difficulty mode ("expert" or "casual") change history
-      // Optional
+      start: "2021-01-31T12:34:56.789Z",
+      pause: "2021-01-31T12:34:56.789Z",
+      resume: "2021-01-31T12:34:56.789Z",
+      end: "2021-01-31T12:34:56.789Z",
       modeChange: {
-        previousMode: String,
-        currentMode: String,
+        previousMode: "2021-01-31T12:34:56.789Z",
+        currentMode: "2021-01-31T12:34:56.789Z",
       },
-
-      printedLevel: Boolean,
-      usedHelp: Boolean,
-      changedSettings: Boolean,
-      solvedWord: Boolean, // see also wordsSolved
-      spottedDifference: Boolean,
+      printLevel: "2021-01-31T12:34:56.789Z",
+      useHelp: "2021-01-31T12:34:56.789Z",
+      settingsChange: "2021-01-31T12:34:56.789Z",
+      // solveWord: "2021-01-31T12:34:56.789Z", // see also wordsSolved
+      spotDifference: "2021-01-31T12:34:56.789Z",
     },
   },
 };
