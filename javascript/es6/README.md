@@ -129,28 +129,30 @@ function handleGameMessage(event) {
 
 A Javascript Object that specifies which command or commands and includes necessary data to fulfill that command.
 
+| Property              | Type    | Description |
+| ---------------------- | ------- | ----------- |
+| `initGame` | boolean | Sends instruction to begin game initialization. If no `initGame` data is sent and the game is not in an iframe, the game is expected to initialize automatically. |
+| `loadLevel` | object | Sends data about the selected game level. If loadLevel is sent during an active game, the game should reset and load the new data. If no loadLevel data is sent, the game is expected to load static test or sample. |
+| `loadLevel.issueDate` | string (required) | The date associated with a given level. Expected format: ISO 8601 Calendar Date, `"YYYY-MM-DD"` |
+| `loadLevel.files` | array containing objects (required) | The available data files for a given level. |
+| `loadLevel.files.url` | string (required) | The URL to the file. |
+| `loadLevel.files.mimeType` | string (required) | The mime types of the file. |
+| `loadLevel.files.originalFileName` | string (required) | The filename with extension. |
+| `loadConfig` | object | Sends config data for customizing game look and feel. |
+| `loadSaveState` | object | Requests save data that represents a replicable play state. |
+| `pauseGame` | boolean | Sends instruction to pause the game, same as if the player triggered it. |
+| `getData` | array containing strings | Requests data from the page per `amuGame.data` properties below. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`. |
+| `onEvent` | array containing strings | Subscribes to an event or events emitted from the game per `amuGame.event` properties below. If the page requests `"all"`, the game should emit data for all events, otherwise it should send only the requested data that matches an available key, such as `"modeChange"`. |
+
 A complete message Object looks like this:
 
 ```javascript
 let message = {
-  // Sends instruction to begin game initialization
-  // Optional: If no initGame data is sent and the game is not in an iframe, the game is expected to initialize automatically
   initGame: Boolean,
-
-  // Sends data about the selected game level
-  // If loadLevel is sent during an active game, the game should reset and load the new data
-  // Optional: If no loadLevel data is sent, the game is expected to load static test or sample data
   loadLevel: {
-    // The date associated with this level data
-    // Required
-    // Format: ISO 8601 Calendar Date, "YYYY-MM-DD"
     issueDate: String,
-    // An array of files containing level data
-    // Required
     files: [
       {
-        // URL, mime type, and file name with extension for each level data file
-        // Required
         url: String,
         mimeType: String,
         originalFileName: String,
@@ -193,10 +195,10 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game.
 
-| Attribute              | Type    | Description |
+| Property              | Type    | Description |
 | ---------------------- | ------- | ----------- |
 | `amuGame.windowLoaded` | boolean | Sends confirmation to the page that the game's window.onload is completed, indicating the game is ready to recieve and act on messages from the page. |
-| `amuGame.data`         | object  | Sends requested data to the page per `getData` options above. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completeionMode"`. |
+| `amuGame.data`         | object  | Sends requested data to the page per `getData` options above. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`. |
 | `amuGame.data.saveState` | object (required) | Used to recreate current game progress for the current level. Level data is stored separately, and should **not** be included in saveState. |
 | `amuGame.data.saveState.completionMode` | string | The difficulty mode ("expert" or "casual") when the user finished the game. |
 | `amuGame.data.saveState.modeChanged` | boolean | `true` if the user changed difficulty modes during the game. |
@@ -274,7 +276,17 @@ let message = {
     },
   },
 };
+```
 
-// Sending amuGame to the page:
+Usage examples:
+
+```javascript
+// Sending amuGame window loaded confirmation to the page:
+frame.contentWindow.postMessage({ amuGame.windowLoaded }, targetOrigin);
+
+// Sending amuGame start event data to the page:
 frame.contentWindow.postMessage({ amuGame.event.start }, targetOrigin);
+
+// Sending the entire amuGame object:
+frame.contentWindow.postMessage(message, targetOrigin);
 ```
