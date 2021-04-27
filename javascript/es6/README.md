@@ -138,8 +138,8 @@ A Javascript Object that specifies which command or commands and includes necess
 | `loadLevel.files.url` | string (required) | The URL to the file. |
 | `loadLevel.files.mimeType` | string (required) | The mime types of the file. |
 | `loadLevel.files.originalFileName` | string (required) | The filename with extension. |
-| `loadConfig` | object | Sends config data for customizing game look and feel. |
-| `loadSaveState` | object | Requests save data that represents a replicable play state. |
+| `loadConfig` | object | Sends config data for customizing game look and feel. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. The page originally receives this in JSON format. If no loadConfig data is sent, the game is expected to load a default config. |
+| `loadSaveState` | object | Requests save data that represents a replicable play state. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. The page originally receives this in JSON format, and if a save state is available will return it to the game without modification. If no loadSaveState data is sent during the initial game startup, the game is expected to load a new game. |
 | `pauseGame` | boolean | Sends instruction to pause the game, same as if the player triggered it. |
 | `getData` | array containing strings | Requests data from the page per `amuGame.data` properties below. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`. |
 | `onEvent` | array containing strings | Subscribes to an event or events emitted from the game per `amuGame.event` properties below. If the page requests `"all"`, the game should emit data for all events, otherwise it should send only the requested data that matches an available key, such as `"modeChange"`. |
@@ -148,46 +148,35 @@ A complete message Object looks like this:
 
 ```javascript
 let message = {
-  initGame: Boolean,
+  initGame: true,
   loadLevel: {
-    issueDate: String,
+    issueDate: '2021-01-31',
     files: [
       {
-        url: String,
-        mimeType: String,
-        originalFileName: String,
+        url: 'https://fileserver/123456',
+        mimeType: 'text/xml',
+        originalFileName: 'myfile.xml',
       },
     ],
   },
-
-  // Sends config data for customizing game look and feel
-  // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
-  // The page originally receives this in JSON format
-  // Optional: If no loadConfig data is sent, the game is expected to load a default config
-  loadConfig: Object,
-
-  // Requests save data that represents a replicable play state
-  // This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel
-  // The page originally receives this in JSON format, and if a save state is available will return it to the game without modification
-  // Optional: If no loadSaveState data is sent during the initial game startup, the game is expected to load a new game
-  loadSaveState: Object,
-
-  // Sends instruction to pause the game, same as if the player triggered it
-  // Optional
-  pauseGame: Boolean,
-
-  // Requests data points from the game, see amuGame.data below
-  // Optional
-  // Array Options: ["all", "completionMode", "modeChanged", "totalPlayTime", "saveState"]
-  getData: Array,
-
-  // Subscribes to an event or events emitted from the game, see amuGame.event below
-  // Optional
-  // Array Options: ["all", "start", "pause", "resume", "end", "modeChange"]
-  onEvent: Array,
+  loadConfig: {},
+  loadSaveState: {},
+  pauseGame: false,
+  getData: ["all"],
+  onEvent: ["end", "modeChange"],
 };
+```
 
-// Sending a message to the game
+Usage examples:
+
+```javascript
+// Sending the game init command to the game:
+frame.contentWindow.postMessage({initGame: true}, targetOrigin);
+
+// Sending the game getData command to the game:
+frame.contentWindow.postMessage({getData: ["all"]}, targetOrigin);
+
+// Sending the entire message to the game:
 frame.contentWindow.postMessage(message, targetOrigin);
 ```
 
