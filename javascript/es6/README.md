@@ -129,22 +129,22 @@ function handleGameMessage(event) {
 
 A Javascript Object that specifies which command or commands and includes necessary data to fulfill that command.
 
-| Property                           | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ---------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initGame`                         | boolean                             | Sends instruction to begin game initialization. If no `initGame` data is sent and the game is not in an iframe, the game is expected to initialize automatically.                                                                                                                                                                                                                                           |
-| `loadLevel`                        | object                              | Sends data about the selected game level. If loadLevel is sent during an active game, the game should reset and load the new data. If no loadLevel data is sent, the game is expected to load static test or sample.                                                                                                                                                                                        |
-| `loadLevel.issueDate`              | string (required)                   | The date associated with a given level. Expected format: ISO 8601 Calendar Date, `"YYYY-MM-DD"`                                                                                                                                                                                                                                                                                                             |
-| `loadLevel.files`                  | array containing objects (required) | The available data files for a given level.                                                                                                                                                                                                                                                                                                                                                                 |
-| `loadLevel.files.url`              | string (required)                   | The URL to the file.                                                                                                                                                                                                                                                                                                                                                                                        |
-| `loadLevel.files.mimeType`         | string (required)                   | The mime types of the file.                                                                                                                                                                                                                                                                                                                                                                                 |
-| `loadLevel.files.originalFileName` | string (required)                   | The filename with extension.                                                                                                                                                                                                                                                                                                                                                                                |
-| `loadConfig`                       | object                              | Sends config data for customizing game look and feel. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. The page originally receives this in JSON format. If no loadConfig data is sent, the game is expected to load a default config.                                                                                                                      |
-| `loadSaveState`                    | object                              | Requests save data that represents a replicable play state. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. The page originally receives this in JSON format, and if a save state is available will return it to the game without modification. If no loadSaveState data is sent during the initial game startup, the game is expected to load a new game. |
-| `pauseGame`                        | boolean                             | Sends instruction to pause the game, same as if the player triggered it.                                                                                                                                                                                                                                                                                                                                    |
-| `getData`                          | array containing strings            | Requests data from the page per `amuGame.data` properties below. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`.                                                                                                                                                            |
-| `onEvent`                          | array containing strings            | Subscribes to an event or events emitted from the game per `amuGame.event` properties below. If the page requests `"all"`, the game should emit data for all events, otherwise it should send only the requested data that matches an available key, such as `"modeChange"`.                                                                                                                                |
+| Property                           | Type                                | Description                                                                                                                                                                                                                                                                            |
+| ---------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initGame`                         | boolean                             | Sends instruction to begin game initialization. If no `initGame` data is sent and the game is not in an iframe, the game is expected to initialize automatically.                                                                                                                      |
+| `loadLevel`                        | object                              | Sends data about the selected game level. If loadLevel is sent during an active game, the game should reset and load the new data. If no loadLevel data is sent, the game is expected to load static test or sample.                                                                   |
+| `loadLevel.issueDate`              | string (required)                   | The date associated with a given level. Expected format: ISO 8601 Calendar Date, `"YYYY-MM-DD"`                                                                                                                                                                                        |
+| `loadLevel.files`                  | array containing objects (required) | The available data files for a given level.                                                                                                                                                                                                                                            |
+| `loadLevel.files.url`              | string (required)                   | The URL to the file.                                                                                                                                                                                                                                                                   |
+| `loadLevel.files.mimeType`         | string (required)                   | The mime types of the file.                                                                                                                                                                                                                                                            |
+| `loadLevel.files.originalFileName` | string (required)                   | The filename with extension.                                                                                                                                                                                                                                                           |
+| `loadConfig`                       | object                              | Sends config data for customizing game look and feel. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. The page originally receives this in JSON format. If no loadConfig data is sent, the game is expected to load a default config. |
+| `loadState`                        | object                              | Sends state data that represents a replicable play state. This varies per game and is sent to the game as a Javascript Object with initGame and loadLevel. If no `loadState` data is sent during the initial game startup, the game is expected to load a new game.                    |
+| `pauseGame`                        | boolean                             | Sends instruction to pause the game, same as if the player triggered it.                                                                                                                                                                                                               |
+| `getState`                         | array containing strings            | Requests state data from the page per `amuGame.state` properties below. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`.                                |
+| `onEvent`                          | array containing strings            | Subscribes to an event or events emitted from the game per `amuGame.event` properties below. If the page requests `"all"`, the game should emit data for all events, otherwise it should send only the requested data that matches an available key, such as `"modeChange"`.           |
 
-A complete message Object looks like this:
+An example complete message Object looks like this:
 
 ```javascript
 let message = {
@@ -159,10 +159,14 @@ let message = {
       },
     ],
   },
-  loadConfig: {},
-  loadSaveState: {},
+  loadConfig: {
+    // TBD: expected to be similar to loadLevel
+  },
+  loadState: {
+    // TBD: expected to be similar to loadLevel
+  },
   pauseGame: false,
-  getData: ["all"],
+  getState: ["all"],
   onEvent: ["end", "modeChange"],
 };
 ```
@@ -184,36 +188,37 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 The `amuGame` Object that contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game.
 
-| Property                                    | Type                     | Description                                                                                                                                                                                                                                          |
-| ------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `amuGame.windowLoaded`                      | boolean                  | Sends confirmation to the page that the game's window.onload is completed, indicating the game is ready to recieve and act on messages from the page.                                                                                                |
-| `amuGame.data`                              | object                   | Sends requested data to the page per `getData` options above. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`.        |
-| `amuGame.data.saveState`                    | object (required)        | Used to recreate current game progress for the current level. Level data is stored separately, and should **not** be included in saveState.                                                                                                          |
-| `amuGame.data.saveState.completionMode`     | string                   | The difficulty mode ("expert" or "casual") when the user finished the game.                                                                                                                                                                          |
-| `amuGame.data.saveState.modeChanged`        | boolean                  | `true` if the user changed difficulty modes during the game.                                                                                                                                                                                         |
-| `amuGame.data.saveState.totalPlayTime`      | number                   | Milliseconds since game start, excluding paused time.                                                                                                                                                                                                |
-| `amuGame.data.saveState.usedHints`          | boolean                  | `true` if the user used hint functionality.                                                                                                                                                                                                          |
-| `amuGame.data.saveState.resetLevel`         | boolean                  | `true` if the user reset the game state. This should persist in the save state once set to `true`, even if other states or valuse are reset.                                                                                                         |
-| `amuGame.data.saveState.enabledDarkMode`    | boolean                  | `true` if the user enabled dark mode.                                                                                                                                                                                                                |
-| `amuGame.data.saveState.madeMistakes`       | boolean                  | `true` if the user entered an incorrect value.                                                                                                                                                                                                       |
-| `amuGame.data.saveState.orderSolved`        | array containing numbers | Track the order the user solved the game.                                                                                                                                                                                                            |
-| `amuGame.data.saveState.totalScore`         | number                   | The total points earned when the game is completed.                                                                                                                                                                                                  |
-| `amuGame.data.saveState.difficultyRating`   | number                   | The difficulty number for this game level.                                                                                                                                                                                                           |
-| `amuGame.data.saveState.scoreBonuses`       | object                   | The types and number of bonus modifiers the user earned.                                                                                                                                                                                             |
-| `amuGame.data.saveState.differencesSpotted` | number                   | The number of differences the user identified.                                                                                                                                                                                                       |
-| `amuGame.data.saveState.earnedPerfectScore` | boolean                  | `true` if the user earned the highest possible score.                                                                                                                                                                                                |
-| `amuGame.event`                             | object                   | Emits requested event data to the page per `onEvent` options above. If the page requests `"all"`, the game should emit data for all events, otherwise it should emit only the requested event data that matches an available key, such as `"start"`. |
-| `amuGame.event.start`                       | string                   | Time the game was started, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
-| `amuGame.event.pause`                       | string                   | Time the game was paused, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                             |
-| `amuGame.event.resume`                      | string                   | Time the game was resumed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
-| `amuGame.event.end`                         | string                   | Time the game was completed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                          |
-| `amuGame.event.modeChange`                  | object                   | The difficulty mode change history.                                                                                                                                                                                                                  |
-| `amuGame.event.modeChange.previousMode`     | string                   | The previously selected mode.                                                                                                                                                                                                                        |
-| `amuGame.event.modeChange.currentMode`      | string                   | The newly selected mode.                                                                                                                                                                                                                             |
-| `amuGame.event.printLevel`                  | string                   | Time the game was printed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
-| `amuGame.event.useHelp`                     | string                   | Time the help was used, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                               |
-| `amuGame.event.settingsChange`              | string                   | Time the settings were changed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                       |
-| `amuGame.event.spotDifference`              | string                   | Time that a difference was correctly spotted, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                         |
+| Property                                | Type                     | Description                                                                                                                                                                                                                                          |
+| --------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `amuGame.windowLoaded`                  | boolean                  | Sends confirmation to the page that the game's window.onload is completed, indicating the game is ready to recieve and act on messages from the page.                                                                                                |
+| `amuGame.state`                         | object                   | Sends requested state data to the page per `getState` options above. If the page requests `"all"`, the game should send all data points, otherwise it should send only the requested data that matches an available key, such as `"completionMode"`. |
+| `amuGame.state.[game specific]`         | object (required)        | Used to recreate current game progress for the current level. If needed multiple objects can be used to store a user's progress. Level data is stored and sent to the game separately, and should not be needed to save the user's progress.         |
+| `amuGame.state.isCompleted`             | boolean                  | Whether or not the user finished this level.                                                                                                                                                                                                         |
+| `amuGame.state.completionMode`          | string                   | The difficulty mode ("expert" or "casual") when the user finished the game.                                                                                                                                                                          |
+| `amuGame.state.modeChanged`             | boolean                  | `true` if the user changed difficulty modes during the game.                                                                                                                                                                                         |
+| `amuGame.state.totalPlayTime`           | number                   | Milliseconds since game start, excluding paused time.                                                                                                                                                                                                |
+| `amuGame.state.usedHints`               | boolean                  | `true` if the user used hint functionality.                                                                                                                                                                                                          |
+| `amuGame.state.resetLevel`              | boolean                  | `true` if the user reset the game state. This should persist in the save state once set to `true`, even if other valuse are reset.                                                                                                                   |
+| `amuGame.state.enabledDarkMode`         | boolean                  | `true` if the user enabled dark mode.                                                                                                                                                                                                                |
+| `amuGame.state.madeMistakes`            | boolean                  | `true` if the user entered an incorrect value.                                                                                                                                                                                                       |
+| `amuGame.state.orderSolved`             | array containing numbers | Track the order the user solved the game.                                                                                                                                                                                                            |
+| `amuGame.state.totalScore`              | number                   | The total points earned when the game is completed.                                                                                                                                                                                                  |
+| `amuGame.state.difficultyRating`        | number                   | The difficulty number for this game level.                                                                                                                                                                                                           |
+| `amuGame.state.scoreBonuses`            | object                   | The types and number of bonus modifiers the user earned.                                                                                                                                                                                             |
+| `amuGame.state.differencesSpotted`      | number                   | The number of differences the user identified.                                                                                                                                                                                                       |
+| `amuGame.state.earnedPerfectScore`      | boolean                  | `true` if the user earned the highest possible score.                                                                                                                                                                                                |
+| `amuGame.event`                         | object                   | Emits requested event data to the page per `onEvent` options above. If the page requests `"all"`, the game should emit data for all events, otherwise it should emit only the requested event data that matches an available key, such as `"start"`. |
+| `amuGame.event.start`                   | string                   | Time the game was started, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
+| `amuGame.event.pause`                   | string                   | Time the game was paused, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                             |
+| `amuGame.event.resume`                  | string                   | Time the game was resumed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
+| `amuGame.event.end`                     | string                   | Time the game was completed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                          |
+| `amuGame.event.modeChange`              | object                   | The difficulty mode change history.                                                                                                                                                                                                                  |
+| `amuGame.event.modeChange.previousMode` | string                   | The previously selected mode.                                                                                                                                                                                                                        |
+| `amuGame.event.modeChange.currentMode`  | string                   | The newly selected mode.                                                                                                                                                                                                                             |
+| `amuGame.event.printLevel`              | string                   | Time the game was printed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                            |
+| `amuGame.event.useHelp`                 | string                   | Time the help was used, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                               |
+| `amuGame.event.settingsChange`          | string                   | Time the settings were changed, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                       |
+| `amuGame.event.spotDifference`          | string                   | Time that a difference was correctly spotted, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                         |
 
 An example complete message Object looks like this:
 
@@ -221,31 +226,30 @@ An example complete message Object looks like this:
 let message = {
   amuGame: {
     windowLoaded: true,
-    data: {
-      saveState: {
-        completionMode: 'casual',
-        modeChanged: false,
-        totalPlayTime: 1234456789,
-        usedHints: false,
-        resetLevel: false,
-        enabledDarkMode: false,
-        madeMistakes: false,
-        orderSolved: [1, 2, 3, 5, 4],
-        // completedInOrder: Boolean,
-        // completedInReverse: Boolean,
-        totalScore: 47,
-        wordsSolved: 3,
-        difficultyRating: 5,
-        scoreBonuses: {
-          1x: 0,
-          2x: 1,
-          3x: 2,
-          4x: 3,
-          5x: 4,
-        },
-        differencesSpotted: 0,
-        earnedPerfectScore: false,
+    state: {
+      isCompleted: false,
+      completionMode: 'casual',
+      modeChanged: false,
+      totalPlayTime: 1234456789,
+      usedHints: false,
+      resetLevel: false,
+      enabledDarkMode: false,
+      madeMistakes: false,
+      orderSolved: [1, 2, 3, 5, 4],
+      // completedInOrder: Boolean,
+      // completedInReverse: Boolean,
+      totalScore: 47,
+      wordsSolved: 3,
+      difficultyRating: 5,
+      scoreBonuses: {
+        1x: 0,
+        2x: 1,
+        3x: 2,
+        4x: 3,
+        5x: 4,
       },
+      differencesSpotted: 0,
+      earnedPerfectScore: false,
     },
     event: {
       start: "2021-01-31T12:34:56.789Z",
