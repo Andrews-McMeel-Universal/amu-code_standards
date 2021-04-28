@@ -167,7 +167,7 @@ let message = {
   },
   pauseGame: false,
   getState: ["all"],
-  onEvent: ["end", "modeChange"],
+  onEvent: ["end", "change mode"],
 };
 ```
 
