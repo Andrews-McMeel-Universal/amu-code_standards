@@ -234,7 +234,7 @@ An example complete message Object looks like this:
 let message = {
   amuGame: {
     windowLoaded: true,
-        event: {
+    event: {
       type: "mode change",
       timeStamp: "2021-01-31T12:34:56.789Z",
       details: "expert",
