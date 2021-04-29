@@ -240,13 +240,13 @@ let message = {
       details: "expert",
     },
     state: {
-      cells: ['A', 'B', 'C'], // example game specific save data
+      cells: ["A", "B", "C"], // example game specific save data
       isCompleted: false,
       madeMistakes: false,
       resetLevel: false,
       totalPlayTime: 1234456789,
       totalScore: 47,
-      completionMode: 'casual',
+      completionMode: "casual",
       differencesSpotted: 0,
       difficultyRating: 5,
       earnedPerfectScore: false,
@@ -254,11 +254,11 @@ let message = {
       modeChanged: false,
       orderSolved: [1, 2, 3, 5, 4],
       scoreBonuses: {
-        1x: 0,
-        2x: 1,
-        3x: 2,
-        4x: 3,
-        5x: 4,
+        bonus1x: 0,
+        bonus2x: 1,
+        bonus3x: 2,
+        bonus4x: 3,
+        bonus5x: 4,
       },
       usedHints: false,
       wordsSolved: 3,
