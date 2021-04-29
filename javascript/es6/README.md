@@ -177,8 +177,8 @@ Usage examples:
 // Sending the game init command to the game:
 frame.contentWindow.postMessage({ initGame: true }, targetOrigin);
 
-// Sending the game getData command to the game:
-frame.contentWindow.postMessage({ getData: ["all"] }, targetOrigin);
+// Sending the game getState command to the game:
+frame.contentWindow.postMessage({ getState: ["all"] }, targetOrigin);
 
 // Sending the entire message to the game:
 frame.contentWindow.postMessage(message, targetOrigin);
