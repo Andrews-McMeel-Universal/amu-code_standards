@@ -194,19 +194,20 @@ The `amuGame` Object that contains data needed by the page. It is important to i
 | `amuGame.state`                    | object                      | Sends all state data to the page after receiving the `getState` command. State should also be sent with any event, see `amuGame.event` below.                                                                                                                                                                                              |
 | `amuGame.state.[game specific]`    | object (required)           | Used to recreate current game progress for the current level. If needed multiple objects can be used to store a user's progress. Level data is stored and sent to the game separately, and should not be needed to save the user's progress.                                                                                               |
 | `amuGame.state.isCompleted`        | boolean (required)          | Whether or not the user finished this level.                                                                                                                                                                                                                                                                                               |
-| `amuGame.state.completionMode`     | string                      | The difficulty mode (`"expert"` or `"casual"`) when the user finished the game.                                                                                                                                                                                                                                                            |
-| `amuGame.state.modeChanged`        | boolean                     | `true` if the user changed difficulty modes during the game.                                                                                                                                                                                                                                                                               |
-| `amuGame.state.totalPlayTime`      | number (required)           | Milliseconds since game start, excluding paused time.                                                                                                                                                                                                                                                                                      |
-| `amuGame.state.usedHints`          | boolean                     | `true` if the user used hint functionality.                                                                                                                                                                                                                                                                                                |
-| `amuGame.state.resetLevel`         | boolean (required)          | `true` if the user reset the game state. This should persist in the save state once set to `true`, even if other values are reset.                                                                                                                                                                                                         |
-| `amuGame.state.enabledDarkMode`    | boolean                     | `true` if the user enabled dark mode.                                                                                                                                                                                                                                                                                                      |
 | `amuGame.state.madeMistakes`       | boolean (required)          | `true` if the user entered an incorrect value.                                                                                                                                                                                                                                                                                             |
-| `amuGame.state.orderSolved`        | array containing numbers    | Track the order the user solved the game.                                                                                                                                                                                                                                                                                                  |
+| `amuGame.state.resetLevel`         | boolean (required)          | `true` if the user reset the game state. This should persist in the save state once set to `true`, even if other values are reset.                                                                                                                                                                                                         |
+| `amuGame.state.totalPlayTime`      | number (required)           | Milliseconds since game start, excluding paused time.                                                                                                                                                                                                                                                                                      |
 | `amuGame.state.totalScore`         | number or string (required) | The total points earned when the game is completed. If the game doesn't use numerical points, it should return the score as a string, such as a time, formatted like `"HH:mm:ss.sss"`.                                                                                                                                                     |
-| `amuGame.state.difficultyRating`   | number                      | The difficulty number for this game level.                                                                                                                                                                                                                                                                                                 |
-| `amuGame.state.scoreBonuses`       | object                      | The types and number of bonus modifiers the user earned.                                                                                                                                                                                                                                                                                   |
+| `amuGame.state.completionMode`     | string                      | The difficulty mode (`"expert"` or `"casual"`) when the user finished the game.                                                                                                                                                                                                                                                            |
 | `amuGame.state.differencesSpotted` | number                      | The number of differences the user identified.                                                                                                                                                                                                                                                                                             |
+| `amuGame.state.difficultyRating`   | number                      | The difficulty number for this game level.                                                                                                                                                                                                                                                                                                 |
 | `amuGame.state.earnedPerfectScore` | boolean                     | `true` if the user earned the highest possible score.                                                                                                                                                                                                                                                                                      |
+| `amuGame.state.enabledDarkMode`    | boolean                     | `true` if the user enabled dark mode.                                                                                                                                                                                                                                                                                                      |
+| `amuGame.state.modeChanged`        | boolean                     | `true` if the user changed difficulty modes during the game.                                                                                                                                                                                                                                                                               |
+| `amuGame.state.orderSolved`        | array containing numbers    | Track the order the user solved the game.                                                                                                                                                                                                                                                                                                  |
+| `amuGame.state.scoreBonuses`       | object                      | The types and number of bonus modifiers the user earned.                                                                                                                                                                                                                                                                                   |
+| `amuGame.state.usedHints`          | boolean                     | `true` if the user used hint functionality.                                                                                                                                                                                                                                                                                                |
+| `amuGame.state.wordsSolved`        | number                      | The number of words the user successfully solved.                                                                                                                                                                                                                                                                                          |
 | `amuGame.event`                    | object                      | Emits requested event data to the page per `amuGame.event.type` options below. If the page requests `"all"`, the game should emit data for all events, otherwise it should emit only the requested event data that matches an available event `type`, such as `"start"`. When emitting an event, also include the current `amuGame.state`. |
 | `amuGame.event.type`               | string (required)           | The event name, available options are: `"start"`, `"pause"`, `"resume"`, `"end"`, `"change mode"`, `"print"`, `"help"`, `"change settings"`, `"spot difference"`, `"solve word"`                                                                                                                                                           |
 | `amuGame.event.timeStamp`          | string (required)           | Time the event occurred, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                                                                                                                    |
@@ -221,19 +222,17 @@ let message = {
     state: {
       cells: ['A', 'B', 'C'], // example game specific save data
       isCompleted: false,
-      completionMode: 'casual',
-      modeChanged: false,
-      totalPlayTime: 1234456789,
-      usedHints: false,
-      resetLevel: false,
-      enabledDarkMode: false,
       madeMistakes: false,
-      orderSolved: [1, 2, 3, 5, 4],
-      // completedInOrder: Boolean,
-      // completedInReverse: Boolean,
+      resetLevel: false,
+      totalPlayTime: 1234456789,
       totalScore: 47,
-      wordsSolved: 3,
+      completionMode: 'casual',
+      differencesSpotted: 0,
       difficultyRating: 5,
+      earnedPerfectScore: false,
+      enabledDarkMode: false,
+      modeChanged: false,
+      orderSolved: [1, 2, 3, 5, 4],
       scoreBonuses: {
         1x: 0,
         2x: 1,
@@ -241,8 +240,8 @@ let message = {
         4x: 3,
         5x: 4,
       },
-      differencesSpotted: 0,
-      earnedPerfectScore: false,
+      usedHints: false,
+      wordsSolved: 3,
     },
     event: {
       type: "mode change",
