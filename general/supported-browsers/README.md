@@ -99,7 +99,7 @@ Mobile Browsers
 
 - Android v11 and above
 - Chrome
-- iOS v14 and above
+- iOS v13 and above
 - Safari, Chrome
 - Device Support
 
@@ -118,4 +118,4 @@ iOS Tablets
 iOS Phones
 - 8 and above
 
-Last updated- 4/2/2021
+Last updated- 5/3/2021
