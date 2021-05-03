@@ -201,7 +201,7 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 #### Messages from the Game
 
-The game communicates with the page via the `amuGame` Javascript Object and contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game.
+The game communicates with the page via the `amuGame` Javascript Object and contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game. If a data point isn't applicable to the game, or if it refers to an event that hasn't occurred yet (such as completing the game), it should be omitted.
 
 | Property                           | Type                        | Description                                                                                                                                                                                                                                                                                                                                          |
 | ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
