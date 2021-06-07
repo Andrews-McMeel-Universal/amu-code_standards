@@ -101,21 +101,25 @@ Mobile Browsers
 - Chrome
 - iOS v13 and above
 - Safari, Chrome
-- Device Support
+
+# Device Support
 
 This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices
 
 Android Tablets
 - Samsung tab
+
 Android Phones
 - Google Pixel
 - Samsung Galaxy
+
 iOS Tablets
 - iPad
 - iPad Pro
 - iPad Mini
 - iPad Air
+
 iOS Phones
 - 8 and above
 
-Last updated- 5/3/2021
+Last updated- 6/7/2021
