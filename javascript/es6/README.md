@@ -129,20 +129,20 @@ function handleGameMessage(event) {
 
 The page communicates with the game via a Javascript Object that gives a command or commands and includes necessary data to fulfill that command.
 
-| Property                           | Type                                | Description                                                                                                                                                                                                                                                                                                                                                       |
-| ---------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initGame`                         | boolean                             | Sends instruction to begin game initialization. If no `initGame` data is sent and the game is not in an iframe, the game is expected to initialize automatically.                                                                                                                                                                                                 |
-| `loadLevel`                        | object                              | Sends data about the selected game level. If `loadLevel` is sent during an active game, the game should reset and load the new data. If no `loadLevel` data is sent, the game is expected to load static test or sample data.                                                                                                                                     |
-| `loadLevel.issueDate`              | string (required)                   | The date associated with a given level. Expected format: ISO 8601 Calendar Date, `"YYYY-MM-DD"`                                                                                                                                                                                                                                                                   |
-| `loadLevel.files`                  | array containing objects (required) | The available data files for a given level.                                                                                                                                                                                                                                                                                                                       |
-| `loadLevel.files.url`              | string (required)                   | The URL to the file.                                                                                                                                                                                                                                                                                                                                              |
-| `loadLevel.files.mimeType`         | string (required)                   | The mime type of the file.                                                                                                                                                                                                                                                                                                                                        |
-| `loadLevel.files.originalFileName` | string (required)                   | The filename with extension. This does not need to be appended to the URL.                                                                                                                                                                                                                                                                                        |
-| `loadConfig`                       | object                              | Sends config data for customizing game look and feel. This varies per game and, if available, is sent to the game with `initGame` and `loadLevel`. If no `loadConfig` data is sent, the game is expected to load a default config.                                                                                                                                |
-| `loadState`                        | object                              | Sends state data that represents a replicable moment during a user's game session. This varies per game and is sent with `initGame` and `loadLevel`. If no `loadState` data is sent during the initial game startup, the game is expected to load a new game.                                                                                                     |
-| `pauseGame`                        | boolean                             | If `true`, sends instruction to pause the game, the same as if triggered by a user.                                                                                                                                                                                                                                                                               |
-| `getState`                         | boolean                             | Requests current `amuGame.state` data from the game. See `amuGame.state` below for more information.                                                                                                                                                                                                                                                              |
-| `onEvent`                          | array containing strings            | Subscribes to an event or events emitted from the game per `amuGame.event.type` options below. If the page requests `"all"`, the game should emit data for all events, otherwise it should only emit data that matches one of the listed event `types`, such as `"change mode"` or `"print"`. When emitting events, the game should also include `amuGame.state`. |
+| Property                           | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `initGame`                         | boolean                             | Sends instruction to begin game initialization. If no `initGame` data is sent and the game is not in an iframe, the game is expected to initialize automatically.                                                                                                                                                                                                                                                              |
+| `loadLevel`                        | object                              | Sends data about the selected game level. If `loadLevel` is sent during an active game, the game should reset and load the new data. If no `loadLevel` data is sent, the game is expected to load static test or sample data.                                                                                                                                                                                                  |
+| `loadLevel.issueDate`              | string (required)                   | The date associated with a given level. Expected format: ISO 8601 Calendar Date, `"YYYY-MM-DD"`                                                                                                                                                                                                                                                                                                                                |
+| `loadLevel.files`                  | array containing objects (required) | The available data files for a given level.                                                                                                                                                                                                                                                                                                                                                                                    |
+| `loadLevel.files.url`              | string (required)                   | The URL to the file.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `loadLevel.files.mimeType`         | string (required)                   | The mime type of the file.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `loadLevel.files.originalFileName` | string (required)                   | The filename with extension. This does not need to be appended to the URL.                                                                                                                                                                                                                                                                                                                                                     |
+| `loadConfig`                       | object                              | Sends config data for customizing game look and feel. This varies per game and may include a `config.json` that maps settings to game properties, and/or image files that are named to match existing image files within the game (used to override the default images). If available, `loadConfig` data is sent to the game with `loadLevel`. If no `loadConfig` data is sent, the game is expected to load a default config. |
+| `loadState`                        | object                              | Sends state data that represents a replicable moment during a user's game session. This varies per game and will be a copy of what is received in `amuGame.state`. If available, `loadState` data is sent with `loadLevel`. If no `loadState` data is sent with `loadLevel`, the game is expected to start new game.                                                                                                           |
+| `pauseGame`                        | boolean                             | If `true`, sends instruction to pause the game, the same as if triggered by a user.                                                                                                                                                                                                                                                                                                                                            |
+| `getState`                         | boolean                             | Requests current `amuGame.state` data from the game. See `amuGame.state` below for more information.                                                                                                                                                                                                                                                                                                                           |
+| `onEvent`                          | array containing strings            | Subscribes to an event or events emitted from the game per `amuGame.event.type` options below. If the page requests `"all"`, the game should emit data for all events, otherwise it should only emit data that matches one of the listed event `types`, such as `"change mode"` or `"print"`. When emitting events, the game should also include `amuGame.state`.                                                              |
 
 An example complete message Object looks like this:
 
@@ -160,10 +160,43 @@ let message = {
     ],
   },
   loadConfig: {
-    // TBD: expected to be similar to loadLevel
+    name: "productname",
+    files: [
+      {
+        url: "https://fileserver/config.json",
+        mimeType: "application/json",
+        originalFileName: "config.json",
+      },
+      {
+        url: "https://fileserver/ImageName.png",
+        mimeType: "image/png",
+        originalFileName: "ImageName.png",
+      },
+    ],
   },
   loadState: {
-    // TBD: expected to be similar to loadLevel
+    cells: ["A", "B", "C"], // example game specific save data
+    isCompleted: false,
+    madeMistakes: false,
+    resetLevel: false,
+    totalPlayTime: 1234456789,
+    totalScore: 47,
+    completionMode: "casual",
+    differencesSpotted: 0,
+    difficultyRating: 5,
+    earnedPerfectScore: false,
+    enabledDarkMode: false,
+    modeChanged: false,
+    orderSolved: [1, 2, 3, 5, 4],
+    scoreBonuses: {
+      bonus1x: 0,
+      bonus2x: 1,
+      bonus3x: 2,
+      bonus4x: 3,
+      bonus5x: 4,
+    },
+    usedHints: false,
+    wordsSolved: 3,
   },
   pauseGame: false,
   getState: true,
