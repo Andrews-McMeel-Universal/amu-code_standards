@@ -180,7 +180,10 @@ let message = {
     ],
   },
   loadState: {
-    cells: ["A", "B", "C"], // example game specific save data
+    // example game specific save data
+    snapshot: {
+      cells["A", "B", "C"],
+    },
     isCompleted: false,
     madeMistakes: false,
     resetLevel: false,
@@ -239,7 +242,7 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 #### Messages from the Game
 
-The game communicates with the page via the `amuGame` Javascript Object and contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game. If a data point isn't applicable to the game, or if it refers to an event that hasn't occurred yet (such as completing the game), it should be omitted.
+The game communicates with the page via the `amuGame` Javascript Object and contains data needed by the page. It is important to include the `amuGame` key as part of the response, which the page uses to identify responses from game. For each data point, note the **strict type/s** and whether or not it is **required**. If a data point is not applicable to every game, or if it refers to an event that hasn't occurred yet (such as completing the game), it will not be required and should be omitted.
 
 | Property                           | Type                        | Description                                                                                                                                                                                                                                                                                                                                          |
 | ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -249,7 +252,7 @@ The game communicates with the page via the `amuGame` Javascript Object and cont
 | `amuGame.event.timeStamp`          | string (required)           | Time the event occurred, use `new Date().toISOString()` to determine the current date and time. Expected format: ISO 8601 with zero UTC offset, `"YYYY-MM-DDTHH:mm:ss.sssZ"`                                                                                                                                                                         |
 | `amuGame.event.details`            | string (required)           | If applicable, additional details about the event.                                                                                                                                                                                                                                                                                                   |
 | `amuGame.state`                    | object                      | Sends all state data to the page after receiving the `getState` command. State should also be sent with any event, see `amuGame.event` below.                                                                                                                                                                                                        |
-| `amuGame.state.[game specific]`    | object (required)           | Used to recreate current game progress for the current level. If needed multiple objects can be used to store a user's progress, and the shape of the data can be whatever is needed by the game. Level data is stored and sent to the game separately, and should not be needed to save the user's progress.                                        |
+| `amuGame.state.snapshot`           | any (required)              | Used to recreate current game progress for the current level. The shape and contents of this data point is flexible and can be whatever is needed by the game, including (but not limited to) nested data, objects, and arrays. Level data is stored and sent to the game separately, and should not be needed to save the user's progress.          |
 | `amuGame.state.isCompleted`        | boolean (required)          | `true` if the user completed this level and the game is final.                                                                                                                                                                                                                                                                                       |
 | `amuGame.state.madeMistakes`       | boolean (required)          | `true` if the user entered an incorrect value during the game.                                                                                                                                                                                                                                                                                       |
 | `amuGame.state.resetLevel`         | boolean (required)          | `true` if the user reset the game state. This should persist in the game state once set to `true`, even if other values are reset.                                                                                                                                                                                                                   |
@@ -278,7 +281,10 @@ let message = {
       details: "expert",
     },
     state: {
-      cells: ["A", "B", "C"], // example game specific save data
+      // example game specific save data
+      snapshot: {
+        cells["A", "B", "C"],
+      },
       isCompleted: false,
       madeMistakes: false,
       resetLevel: false,
