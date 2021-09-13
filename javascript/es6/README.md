@@ -323,3 +323,16 @@ frame.contentWindow.postMessage({ amuGame.event, amuGame.state }, targetOrigin);
 // Sending the entire amuGame object:
 frame.contentWindow.postMessage(message, targetOrigin);
 ```
+
+During a user's play session they will likely trigger several events, though not all events will be applicable to every game. Here's an overview of the available events:
+
+- `"start"`, when the user starts a game session from the menu (usually with a "Play" button) or when the user restarts the game after completing it (usually "Reset" or "Play Again").
+- `"pause"`, when the game is paused, typically because the user interacted with the pause button or the timer stopped.
+- `"resume"`, when the game is started again, typically because the user interacted with the "Resume" button or the timer resumed.
+- `"end"`, when the user finishes the game and the game over screen is shown. The only expected event after `"end"` is `"start"`, if the user chooses to replay that level.
+- `"print"`, when the user prints the level.
+- `"help"`, when the user interacts with any help, hint, or tip in the settings or menu.
+- `"change mode"`, when the user toggles between difficulty modes, usually to go from "expert" to "casual" or vice versa.
+- `"change settings"`, when the user updates the in-game settings, such as to disable/enable sound.
+- `"spot difference"`, when the user successfully finds a difference.
+- `"solve word"`, when the user successfully solves a word.
