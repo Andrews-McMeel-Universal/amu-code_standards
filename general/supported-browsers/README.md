@@ -98,9 +98,9 @@ Desktop Browsers
 Mobile Browsers
 
 - Android v11 and above
-- Chrome
+- Chrome 85 and above
 - iOS v13 and above
-- Safari, Chrome
+- Safari 13 and above, Chrome 85 and above
 
 # Device Support
 
