@@ -328,10 +328,11 @@ frame.contentWindow.postMessage(message, targetOrigin);
 
 During a user's play session they will likely trigger several events, though not all events will be applicable to every game. Here's an overview of the available events:
 
-- `"start"`, when the user starts a game session from the menu (usually with a "Play" button) or when the user restarts the game after completing it (usually "Reset" or "Play Again").
+- `"start"`, when the user starts a game session from the menu (usually with a "Play" button).
 - `"pause"`, when the game is paused, typically because the user interacted with the pause button or the timer stopped.
 - `"resume"`, when the game is started again, typically because the user interacted with the "Resume" button or the timer resumed.
-- `"end"`, when the user finishes the game and the game over screen is shown. The only expected event after `"end"` is `"start"`, if the user chooses to replay that level.
+- `"end"`, when the user finishes the game and the game over screen is shown. After finishing a game no other events are expected, except for `"replay"`.
+- `"replay"`, when the user chooses to replay a level from the game over screen (usually with a "Reset" or "Play Again" button). The game should return to the menu, set `amuGame.state.resetLevel = true`, and allow the user to initiate a new game via the "Play" button and related `"start"` event.
 - `"print"`, when the user prints the level.
 - `"help"`, when the user interacts with any help, hint, or tip in the settings or menu.
 - `"change mode"`, when the user toggles between difficulty modes, usually to go from "expert" to "casual" or vice versa.
