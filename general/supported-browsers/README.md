@@ -104,7 +104,7 @@ Mobile Browsers
 
 # Device Support
 
-This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices
+This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices.
 
 Android Tablets
 - Samsung tab
@@ -122,4 +122,4 @@ iOS Tablets
 iOS Phones
 - 8 and above
 
-Last updated- 11/1/2021
+Last updated- 3/7/2022
