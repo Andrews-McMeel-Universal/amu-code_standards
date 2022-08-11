@@ -91,9 +91,9 @@ Desktop Browsers
 - Windows 10 Edge 95 and above
 - Windows 10 IE 11- NOT Supported
 - Windows 10 Opera 85 and above
-- Mac Safari 13 and above
-- Mac Chrome 90 and above
-- Mac Firefox 95 and above
+- Mac Big Sur Safari 13 and above
+- Mac Big Sur Chrome 90 and above
+- Mac Big Sur Firefox 95 and above
 
 Mobile Browsers
 
@@ -120,6 +120,6 @@ iOS Tablets
 - iPad Air
 
 iOS Phones
-- 8 and above
+- 10 and above
 
-Last updated- 6/7/2022
+Last updated- 8/11/2022
