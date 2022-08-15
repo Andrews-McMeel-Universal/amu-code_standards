@@ -316,8 +316,11 @@ let message = {
       isCompleted: false,
       madeMistakes: false,
       resetLevel: false,
+      score: {
+        value: '00:00:34.567',
+        formattedScore: '34.6 seconds',
+      },
       totalPlayTime: 1234456789,
-      totalScore: 47,
       completionMode: "casual",
       differencesSpotted: 0,
       difficultyRating: 5,
