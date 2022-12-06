@@ -86,44 +86,43 @@ This is a list of the client platforms/ browsers supported by AMU Products acros
 
 Desktop Browsers
 
-- Windows 11 Chrome 101 and above
-- Windows 11 Firefox 101 and above
-- Windows 11 Edge 102 and above
-- Windows 11 Opera 85 and above
-- Windows 10 Chrome 101 and above
-- Windows 10 Firefox 101 and above
-- Windows 10 Edge 102 and above
+- Windows 11 Chrome 108 and above
+- Windows 11 Firefox 107 and above
+- Windows 11 Edge 107 and above
+- Windows 11 Opera 93 and above
+- Windows 10 Chrome 108 and above
+- Windows 10 Firefox 107 and above
+- Windows 10 Edge 107 and above
 - Windows 10 IE 11- NOT Supported
-- Windows 10 Opera 85 and above
-- Mac Big Sur Safari 13 and above
-- Mac Big Sur Chrome 101 and above
-- Mac Big Sur Firefox 101 and above
+- Windows 10 Opera 93 and above
+- Mac Monterey Safari 15 and above
+- Mac Monterey Chrome 107 and above
+- Mac Monterey Firefox 107 and above
 
 Mobile Browsers
 
 - Android v11 and above
-- Chrome 101 and above
-- iOS v14 and above
-- Safari 14 and above, Chrome 101 and above
+- Chrome 107 and above
+- iOS v15 and above
+- Safari 15 and above, Chrome 107 and above
 
 # Device Support
 
 This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices.
 
 Android Tablets
-- Samsung tab
+- Samsung tab S7
 
 Android Phones
-- Google Pixel
+- Google Pixel 5
 - Samsung Galaxy
 
 iOS Tablets
-- iPad
+- iPad Gen 8 (and above)
 - iPad Pro
 - iPad Mini
 - iPad Air
 
-iOS Phones
-- 10 and above
+iOS Phone 12
 
-Last updated- 10/24/2022
+Last updated- 12/6/2022
