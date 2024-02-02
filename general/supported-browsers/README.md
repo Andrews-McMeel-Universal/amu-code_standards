@@ -1,8 +1,14 @@
 # Browser Support
 
+## Supported Platforms (Confluence QA Page)
+
+Our [list of supported client platforms/browsers](https://amuniversal.atlassian.net/wiki/x/AYBoc) is located in Confluence. This is maintained and updated on a periodic basis.
+
+## Browserslist
+
 We use [Browserslist](https://github.com/browserslist/browserslist) to determine browser support. Many tools will use the `.browserslistrc` config file to automatically provide a customized build that targets the desired browsers. Our config is more permissive in selecting more supported browsers than we officially support, but we do this in an effort to maintain a minumum acceptable experience on those additional browsers.
 
-## Installation
+### Installation
 
 To use Browserslist, add a `.browserslistrc` file to the root of the project with any other config files. We have a sample `.browserslistrc` file available for use.
 
@@ -11,7 +17,7 @@ Useful links:
 - [browserslist.dev](https://browserslist.dev/?q=Pj0gMSUgYW5kIGxhc3QgMyBtYWpvciB2ZXJzaW9ucywgbm90IElFIDExLCBub3Qgb3BfbWluaSBhbGwsIG5vdCBkZWFkLCBtYWludGFpbmVkIG5vZGUgdmVyc2lvbnM%3D), an easy to read list of supported browsers (please update the link if you change the .browserslistrc)
 - [@babel/preset-env](https://babeljs.io/docs/en/next/babel-preset-env.html), which is already included in our [recommended Babel config](https://github.com/Andrews-McMeel-Universal/amu-code_standards/tree/production/javascript/es6/transpilers)
 
-## Linting for Browser Support
+### Linting for Browser Support
 
 Wherever possible, to check that we're properly supporting these browsers (or at least providing reasonable fallbacks) we lint our [Javascript](https://github.com/amilajack/eslint-plugin-compat) and [SCSS](https://github.com/ismay/stylelint-no-unsupported-browser-features), which will warn if it thinks something is unsupported. If a linter does flag code as unsupported, consider the following options:
 
@@ -28,7 +34,7 @@ margin-bottom: calc(#{$grid-gutter-width * 2} - #{$nav-link-padding-y});
 // stylelint-enable plugin/no-unsupported-browser-features
 ```
 
-## Installing eslint-plugin-compat
+### Installing eslint-plugin-compat
 
 ```bash
 yarn add eslint-plugin-compat
@@ -51,7 +57,7 @@ Update the ESLint config file:
 }
 ```
 
-## Installing stylelint-no-unsupported-browser-features
+### Installing stylelint-no-unsupported-browser-features
 
 ```bash
 yarn add stylelint-no-unsupported-browser-features
@@ -79,50 +85,3 @@ Update the Stylelint config file:
   }
 }
 ```
-
-# Supported Platforms (Confluence QA Page)
-
-This is a list of the client platforms/ browsers supported by AMU Products across the board. This will be maintained up to date on a periodic basis.
-
-Desktop Browsers
-
-- Windows 11 Chrome 112 and above
-- Windows 11 Firefox 113 and above
-- Windows 11 Edge 113 and above
-- Windows 11 Opera 98 and above
-- Windows 10 Chrome 112 and above
-- Windows 10 Firefox 113 and above
-- Windows 10 Edge 113 and above
-- Windows 10 IE 11- NOT Supported
-- Windows 10 Opera 98 and above
-- Mac Monterey Safari 16.4 and above
-- Mac Monterey Chrome 112 and above
-- Mac Monterey Firefox 113 and above
-
-Mobile Browsers
-
-- Android v13 and above
-- Chrome 115 and above
-- iOS v16.4 and above
-- Safari 16.4 and above, Chrome 115 and above
-
-# Device Support
-
-This is a combination of data collected from Analytics and testability in BrowserStack and on actual devices.
-
-Android Tablets
-- Samsung tab S7
-
-Android Phones
-- Google Pixel 5
-- Samsung Galaxy
-
-iOS Tablets
-- iPad Gen 8 (and above)
-- iPad Pro
-- iPad Mini
-- iPad Air
-
-iOS Phone 12
-
-Last updated- 8/16/2023
